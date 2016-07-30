@@ -65,20 +65,20 @@ class Wuan extends CI_Controller {
 		if($adminpwd == $admin['search']['adminpwd'])
 		{
 			//验证成功
-			$date['user'] = $this->wuan_model->get_username();
-			$date['adminname'] = $admin['search']['adminname'];
+			$data['user'] = $this->wuan_model->get_username();
+			$data['adminname'] = $admin['search']['adminname'];
 
 
 			//登陆用户写入数据库////////////////////////////////////
 			$max = $this->wuan_model->max('login_admin');
 			$data['add_login_admin'] = array('Id' => $max['Max(Id)']+1,
-				 'login_admin' => $date['adminname'],
+				 'login_admin' => $data['adminname'],
 				 'login_time'  => date('y-m-d h:i:s',time()));
 
-		$query = $this->db->insert('login_admin',$data['add_login_admin']);
+			$query = $this->db->insert('login_admin',$data['add_login_admin']);
 			
 
-			$this->load->view('wuan_console/team_mangement',$date);
+			$this->load->view('wuan_console/team_mangement',$data);
 
 		}
 		////////////////////////////////////////////////////////////////
@@ -95,7 +95,20 @@ class Wuan extends CI_Controller {
 		//echo $item;
 		$this->wuan_model->delete($item);
 
-		echo "<script>alert('删除成功');location.href='".$_SERVER["HTTP_REFERER"]."';</script>";
+//////////////////////////////////////////////////////////////////
+		$data['user'] = $this->wuan_model->get_username();
+
+		//获取登陆用户名
+		$data['adminname'] = $this->wuan_model->get_login_admin()->login_admin;
+		//print_r ($data['adminname']);
+
+		$this->load->view('wuan_console/team_mangement',$data);
+		/////////////////////////////////////////////////////////////
+
+		//$this->Wuan->index();
+		//$this->load->view('wuan/logining');
+
+		//echo "<script>alert('删除成功');location.href='".$_SERVER["HTTP_REFERER"]."';</script>";
 
 
 	}
@@ -118,7 +131,16 @@ class Wuan extends CI_Controller {
 				 'nickname' => $nickname);
 
 		$query = $this->db->insert('userlist',$data['userlist']);
-		$this->load->view('wuan_console/add');
+		//$this->load->view('wuan_console/add');
+
+
+		$data['user'] = $this->wuan_model->get_username();
+
+		//获取登陆用户名
+		$data['adminname'] = $this->wuan_model->get_login_admin()->login_admin;
+		//print_r ($data['adminname']);
+
+		$this->load->view('wuan_console/team_mangement',$data);
 		//echo $this->db->insert_id();
 	}
 

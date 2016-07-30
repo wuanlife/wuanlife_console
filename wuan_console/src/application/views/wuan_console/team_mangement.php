@@ -42,6 +42,7 @@
 
 								<!-- <td><?php echo "delete"; ?></td> -->
 							</tr>
+							
 
 
 <?php endforeach; ?>
