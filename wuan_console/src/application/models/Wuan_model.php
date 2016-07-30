@@ -24,9 +24,17 @@ class Wuan_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function get_login_admin()
+	{
+		$query = "select `login_admin` From login_admin where Id = (select max(Id) from login_admin)";
+		$query = $this->db->query($query);
+		return $query->row();
+		//return $query->db->get('login_admin');
+	}
+
 	public function search($adminname)
 	{
-		//在数据库中查询admin账号
+		//在数据库中查询admin账号用于验证
 		//$sql= "select adminpwd from adminlist where adminname = $con";
 		$query = $this->db->get_where('adminlist',array('adminname' =>$adminname));
 		return $query->row_array();
@@ -42,10 +50,14 @@ class Wuan_model extends CI_Model {
 		$this->db->insert('userlist',$row);
 	}
 
-	public function max()
+	public function max($table)
 	{
 		//$query = "select MAX(Id) from userlist";
-		return $this->db->insert_id();
+		$query = "select Max(Id) from $table";
+		$query = $this->db->query($query);
+		return $query->row_array();
+
+		//return $query = $this->db->insert_id();
 	}
 	
 }

@@ -11,7 +11,7 @@
 	<br />
 	<br />
 		<?php echo validation_errors(); ?>
-	<form action="<?php echo site_url('Wuan/yanzheng'); ?>" method="post">
+	<form action="<?php echo site_url('Wuan/logining'); ?>" method="post">
 		<label for="adminname">用户名：</label>
 		<input type="input" name= "adminname" /><br />
 		<br />

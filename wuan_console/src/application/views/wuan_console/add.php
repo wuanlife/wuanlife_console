@@ -6,13 +6,13 @@
 </head>
 <body>
 	<center>
-		<form action="<?php echo site_url('wuan/addd'); ?>" method="post">
+		<form action="<?php echo site_url('wuan/adding'); ?>" method="post">
 			<p>新增管理员</p>
 			<br />
 			<label for="nickname">呢称：</label>
 			<input type="text" name = "nickname" />
 			<br /><br /><br />
-			<input type ="submit" name= "submit" value="登陆" />
+			<input type ="submit" name= "submit" value="添加" />
 		</form>
 	</center>
 </body>

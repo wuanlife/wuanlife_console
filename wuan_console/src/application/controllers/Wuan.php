@@ -9,36 +9,53 @@ class Wuan extends CI_Controller {
 		$this->load->model('wuan_model');
 	}
 
-	public function index() {
-
-		$data['user'] = $this->news_model->get_username();
-		$data['adminname'] = "";
-		$this->load->view('wuan_console/team_mangement',$data);
-	}
-
-	public function team_mangement() {
-
-		$date['user'] = $this->wuan_model->get_username();
-		$this->load->view('wuan_console/team_mangement',$date);
-
-		//$date['namelist'] = $this->wuan_console_model->get_username();
-	}
+	//$data['user'] = $this->wuan_model->get_username();
 
 	public function login() {
 
+		//登陆页面
 		$this->load->view('wuan_console/login');
 
 	}
 
-	public function yanzheng()
+	public function index() {
+
+
+		//获取表userlist数据
+		// $data['user'] = $this->wuan_model->get_username();
+		
+		// //登陆人的名称
+		// $data['a'] = $this->wuan_model->get_login_admin();
+		// print_r ($data['a']);
+		// $data['adminname'] = $data['a']->login_admin;
+		
+		$this->load->view('wuan_console/team_mangement');
+	}
+
+	public function team_mangement() {
+
+		//获取表userlist数据
+		$data['user'] = $this->wuan_model->get_username();
+
+		//获取登陆用户名
+		$data['adminname'] = $this->wuan_model->get_login_admin()->login_admin;
+		//print_r ($data['adminname']);
+
+		$this->load->view('wuan_console/team_mangement',$data);
+
+	}
+
+	
+
+	public function logining()
 	{
 		//验证管理员登陆
 		//echo $_POST['adminname'];
 		//echo $_POST['adminpwd'];
 		
-		//view传回来的数据
+		//view login传回来的数据
 		$adminname = $this->input->post('adminname');
-		$adminpwd = $this->input->post('adminpwd');
+		$adminpwd  = $this->input->post('adminpwd');
 		
 
 		//在数据库中查找对应的行
@@ -51,13 +68,25 @@ class Wuan extends CI_Controller {
 			$date['user'] = $this->wuan_model->get_username();
 			$date['adminname'] = $admin['search']['adminname'];
 
+
+			//登陆用户写入数据库////////////////////////////////////
+			$max = $this->wuan_model->max('login_admin');
+			$data['add_login_admin'] = array('Id' => $max['Max(Id)']+1,
+				 'login_admin' => $date['adminname'],
+				 'login_time'  => date('y-m-d h:i:s',time()));
+
+		$query = $this->db->insert('login_admin',$data['add_login_admin']);
+			
+
 			$this->load->view('wuan_console/team_mangement',$date);
 
 		}
+		////////////////////////////////////////////////////////////////
 		else
 		{
-			$this->load->view('wuan_console/login');
 			echo "登陆失败";
+			$this->load->view('wuan_console/login');
+			
 		}
 
 	}
@@ -65,6 +94,7 @@ class Wuan extends CI_Controller {
 	{
 		//echo $item;
 		$this->wuan_model->delete($item);
+
 		echo "<script>alert('删除成功');location.href='".$_SERVER["HTTP_REFERER"]."';</script>";
 
 
@@ -76,18 +106,18 @@ class Wuan extends CI_Controller {
 		
 	}
 
-	public function addd()
+	public function adding()
 	{
 		$nickname = $this->input->post('nickname');
 		//获取从页面返回的nickname
-		$max = $this->wuan_model->max();
+		$max = $this->wuan_model->max('userlist');
 		//获取最大ID
-		
-		$data = array('Id' => $max[0]['Id'], 'nickname' => $nickname);
-	
-		
+		//print_r ($max);
+		//$Max_Id = $max->Id
+		$data['userlist'] = array('Id' => $max['Max(Id)']+1,
+				 'nickname' => $nickname);
 
-		$query=$this->db->insert('userlist',$data);
+		$query = $this->db->insert('userlist',$data['userlist']);
 		$this->load->view('wuan_console/add');
 		//echo $this->db->insert_id();
 	}

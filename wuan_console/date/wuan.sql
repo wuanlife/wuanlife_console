@@ -34,7 +34,33 @@ LOCK TABLES `adminlist` WRITE;
 /*!40000 ALTER TABLE `adminlist` DISABLE KEYS */;
 INSERT INTO `adminlist` VALUES (1,'admin','admin');
 INSERT INTO `adminlist` VALUES (2,'admin1','admin1');
+INSERT INTO `adminlist` VALUES (3,'admin3','admin3');
 /*!40000 ALTER TABLE `adminlist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+#
+# Source for table login_admin
+#
+
+DROP TABLE IF EXISTS `login_admin`;
+CREATE TABLE `login_admin` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Login_admin` varchar(255) NOT NULL DEFAULT '',
+  `login_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Dumping data for table login_admin
+#
+
+LOCK TABLES `login_admin` WRITE;
+/*!40000 ALTER TABLE `login_admin` DISABLE KEYS */;
+INSERT INTO `login_admin` VALUES (1,'admin','2016-07-30 09:32:54');
+INSERT INTO `login_admin` VALUES (2,'admin3','2016-07-30 09:48:51');
+INSERT INTO `login_admin` VALUES (3,'admin','2016-07-30 11:54:17');
+INSERT INTO `login_admin` VALUES (4,'admin3','2016-07-30 11:54:34');
+/*!40000 ALTER TABLE `login_admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
 #
@@ -83,12 +109,15 @@ LOCK TABLES `userlist` WRITE;
 INSERT INTO `userlist` VALUES (1,'Hello');
 INSERT INTO `userlist` VALUES (2,'测试中文');
 INSERT INTO `userlist` VALUES (7,'12344');
-INSERT INTO `userlist` VALUES (13,'sdf');
 INSERT INTO `userlist` VALUES (14,'14');
 INSERT INTO `userlist` VALUES (15,'15');
-INSERT INTO `userlist` VALUES (19,'ss');
-INSERT INTO `userlist` VALUES (20,'admin3');
-INSERT INTO `userlist` VALUES (22,'1q');
+INSERT INTO `userlist` VALUES (24,'第一个');
+INSERT INTO `userlist` VALUES (25,'111');
+INSERT INTO `userlist` VALUES (26,'111');
+INSERT INTO `userlist` VALUES (27,'27');
+INSERT INTO `userlist` VALUES (28,'28');
+INSERT INTO `userlist` VALUES (29,'28');
+INSERT INTO `userlist` VALUES (30,'30');
 /*!40000 ALTER TABLE `userlist` ENABLE KEYS */;
 UNLOCK TABLES;
 
