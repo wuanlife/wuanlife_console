@@ -10,15 +10,23 @@
 	<center>午安网管理中心
 	<br />
 	<br />
-		<?php echo validation_errors(); ?>
+		
 	<form action="<?php echo site_url('Wuan/logining'); ?>" method="post">
-		<label for="adminname">用户名：</label>
-		<input type="input" name= "adminname" /><br />
-		<br />
-		<label for="adminpwd">密　码：</label>
-		<input type="password" name ="adminpwd" /><br />
-		<br />
-		<input type ="submit" name= "submit" value="登陆" />
+	<table>
+		<tr>
+			<td>用户名：</td>
+			<td><input type="input" name= "adminname" value="<?php echo set_value('adminname'); ?>" ><?php echo form_error('adminname','<span>','</span>');?></td>
+		</tr>
+		<tr>
+			<td>密 码：</td>
+			<td><input type="password" name= "adminpwd" value="<?php echo set_value('adminpwd'); ?>" ><?php echo form_error('adminpwd','<span>','</span>');?></td>
+		</tr>
+		<tr>
+			<td colspan = "2" style="text-align:center;"><input type ="submit" name= "submit" value="登陆" /></td>
+		</tr>
+	</table>
+
+
 	</center>
 </form>
 </body>
