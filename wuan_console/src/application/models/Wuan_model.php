@@ -6,60 +6,60 @@ class Wuan_model extends CI_Model {
         $this->load->database();
     }
 
-	// public function get_admin($adminname = false )
-	// {
-	// 	$query = $this->db->get('adminlist',array('adminname' => $adminname));
-	// 	return $query->row_array();
-	// }
-
-	public function get_username()
+	public function get_user_base_id()
 	{
-		$query = $this->db->get('userlist');
+		$q = "select user_base_id from user_detail where authorization = 2";
+		$query = $this->db->query($q);
 		return $query->result_array();
 	}
 
-	public function get_adminname()
+	public function search_id($value)
 	{
-		$query = $this->db->get('adminlist');
-		return $query->result_array();
+		# code...
+		$q = "select id from user_base where nickname = '" . $value . " '";
+		$query = $this->db->query($q);
+		return $query->row_array();
+	}
+	public function change_auth($value)
+	{
+		$q = "update user_detail set authorization = '02' where user_base_id = $value";
+		$query = $this->db->query($q);
+	}
+	public function change_auth_user($value)
+	{
+		$q = "update user_detail set authorization = '01' where user_base_id = $value";
+		$query = $this->db->query($q);
+	}
+
+	public function search_auth($value)
+	{
+		$q = "select authorization from user_detail where user_base_id = $value";
+		$query = $this->db->query($q);
+		return $query->row_array();
 	}
 
 	public function get_login_admin()
 	{
-		$query = "select `login_admin` From login_admin where Id = (select max(Id) from login_admin)";
+		$query = "select `nickname` from user_base where id = 1";
 		$query = $this->db->query($query);
-		return $query->row();
+		return $query->result_array();
 		//return $query->db->get('login_admin');
 	}
+	public function get_admin($a)
+	{
+		$query = "select `id` , `nickname` from user_base where id = $a";
+		$query = $this->db->query($query);
+		return $query->result_array();
 
-	public function search($adminname)
-	{
-		//在数据库中查询admin账号用于验证
-		//$sql= "select adminpwd from adminlist where adminname = $con";
-		$query = $this->db->get_where('adminlist',array('adminname' =>$adminname));
-		return $query->row_array();
 	}
-
-	public function delete($item)
+	public function search_md5($id)
 	{
-		//删除数据
-		$this->db->delete('userlist',array('Id' =>$item));
-	}
-	public function add($row)
-	{
-		$this->db->insert('userlist',$row);
-	}
-
-	public function max($table)
-	{
-		//$query = "select MAX(Id) from userlist";
-		$query = "select Max(Id) from $table";
+		$query = "select password from user_base where id = $id";
 		$query = $this->db->query($query);
 		return $query->row_array();
-
-		//return $query = $this->db->insert_id();
 	}
-	
+
+
 }
 
 

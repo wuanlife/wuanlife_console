@@ -75,9 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => 'dev.wuanlife.com',
+	'port' => '3306',
 	'username' => 'root',
-	'password' => '123321',
+	'password' => 'root',
 	'database' => 'wuan',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
