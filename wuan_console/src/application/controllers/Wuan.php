@@ -142,9 +142,7 @@ class Wuan extends CI_Controller {
 
 			$_SESSION['i'] = $i;
 			$_SESSION['data'] = $data[$i]['id'];
-			echo "-----------1-";
-			print_r($_SESSION['i']);
-			print_r($_SESSION['data']);
+
 
 			///////////////////////////////////////////////////
 
@@ -360,9 +358,9 @@ if(!isset($_SESSION))
 				session_start();
 			}
 
-			print_r($_SESSION['i']);
+			// print_r($_SESSION['i']);
 			
-			print_r($_SESSION['data']);
+			// print_r($_SESSION['data']);
 
 
 		//获取表中1数据 taotao

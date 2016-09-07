@@ -6,9 +6,9 @@ class Wuan_model extends CI_Model {
         $this->load->database();
     }
 
-	public function get_user_base_id()
+	public function get_user_base_id($auth)
 	{
-		$q = "select user_base_id from user_detail where authorization = 2";
+		$q = "select user_base_id from user_detail where authorization = $auth";
 		$query = $this->db->query($q);
 		return $query->result_array();
 	}
@@ -38,11 +38,11 @@ class Wuan_model extends CI_Model {
 		return $query->row_array();
 	}
 
-	public function get_login_admin()
+	public function get_login_admin($id)
 	{
-		$query = "select `nickname` from user_base where id = 1";
+		$query = "select `nickname` from user_base where id = $id";
 		$query = $this->db->query($query);
-		return $query->result_array();
+		return $query->row_array();
 		//return $query->db->get('login_admin');
 	}
 	public function get_admin($a)
