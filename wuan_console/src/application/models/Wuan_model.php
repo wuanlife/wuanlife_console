@@ -77,6 +77,19 @@ class wuan_model extends CI_Model {
 		$query = $this->db->query($q);
 	}
 
+	public function get_starinfo()
+	{
+		$q = "select id,name,g_introduction from group_base";
+		$query = $this->db->query($q);
+		return $query->result_array();
+	}
+
+	public function get_starinfo_20()
+	{
+		$data = $this->db->select('id,name,g_introduction')->from('group_base')->order_by('id','asc')->get()->result_array();
+		return $data;
+	}
+
 
 }
 

@@ -178,7 +178,67 @@ class Wuan extends CI_Controller {
 
 		$this->load->view('wuan_console/head',$_SESSION['data']);
 		$this->load->view('wuan_console/left');
-		$this->load->view('wuan_console/team_mangement',$_SESSION['data']);
+		$this->load->view('wuan_console/team_mangement');
+
+	}
+
+	public function star_mangement()
+	{
+		if(!isset($_SESSION))
+			{
+				session_start();
+			}
+		//载入分页类
+		$this->load->library('pagination');
+		$perPage = 20;
+
+		//配置项设置
+		$config['base_url'] = site_url('wuan/star_mangement');
+		$config['total_rows'] = $this->db->count_all_results('group_base');
+		$config['per_page'] = $perPage;
+		$config['uri_segment'] = 3;
+		$config['prev_link'] = '上一页';
+		$config['next_link'] = '下一页';
+		$config['first_link'] = '第一页';
+		$config['last_link'] = '最后一页';
+
+		$this->pagination->initialize($config);
+
+		$data['links'] = $this->pagination->create_links();
+		//p($config);die;
+		$offset = $this->uri->segment(3);
+		$this->db->limit($perPage,$offset);
+		
+
+
+
+
+		//$this->model->wuan_model->get_startinfo_20();
+
+		//$data['starinfo'] = $this->wuan_model->get_starinfo();
+		$data['starinfo'] = $this->wuan_model->get_starinfo_20();
+		//p($data['starinfo']);
+
+
+
+
+		$this->load->view('wuan_console/head',$_SESSION['data']);
+		$this->load->view('wuan_console/left');
+		$this->load->view('wuan_console/star_mangement',$data);
+
+	}
+
+	public function team_mangement()
+	{
+		if(!isset($_SESSION))
+			{
+				session_start();
+			}
+		
+		$this->load->view('wuan_console/head',$_SESSION['data']);
+		$this->load->view('wuan_console/left');
+		$this->load->view('wuan_console/team_mangement');
+
 
 	}
 
