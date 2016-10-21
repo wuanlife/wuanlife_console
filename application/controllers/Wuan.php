@@ -12,16 +12,13 @@ class Wuan extends CI_Controller {
 	}
 
 
-
 	//登陆
 	public function login()
 	{
-
 		$this->load->view('wuan_console/login');
-
 	}
 
-	public function logining() 
+	public function logining()
 	{
 		//登陆过程
 		//载入表单验证类
@@ -33,7 +30,7 @@ class Wuan extends CI_Controller {
 
 		//开始验证
 		$status = $this->form_validation->run();
-
+ 
 		if ($status) 
 		{
 
@@ -155,7 +152,7 @@ class Wuan extends CI_Controller {
 				{
 					session_start();
 				}
-				echo "---";
+				//echo "---";
 
 				$_SESSION['data']['admin']= $this->wuan_model->insertdata();
 
@@ -188,39 +185,59 @@ class Wuan extends CI_Controller {
 			{
 				session_start();
 			}
-		//载入分页类
-		$this->load->library('pagination');
-		$perPage = 20;
-
-		//配置项设置
-		$config['base_url'] = site_url('wuan/star_mangement');
-		$config['total_rows'] = $this->db->count_all_results('group_base');
-		$config['per_page'] = $perPage;
-		$config['uri_segment'] = 3;
-		$config['prev_link'] = '上一页';
-		$config['next_link'] = '下一页';
-		$config['first_link'] = '第一页';
-		$config['last_link'] = '最后一页';
-
-		$this->pagination->initialize($config);
-
-		$data['links'] = $this->pagination->create_links();
-		//p($config);die;
-		$offset = $this->uri->segment(3);
-		$this->db->limit($perPage,$offset);
 		
 
 
+		//-------------------------------------------------------------------
+		
+		//把表group_detail的group_base_id保存在一个数组里 不要重复数据
+		
+		//print_r($data);
 
+		//载入分页类
+		// $this->load->library('pagination');
+		// $perPage = 20;
+		//配置项设置
+		// $config['base_url'] = site_url('wuan/star_mangement');
+		// $config['total_rows'] = $this->db->count_all_results('group_base');
+		// $config['per_page'] = $perPage;
+		// $config['uri_segment'] = 3;
+		// $config['prev_link'] = '上一页';
+		// $config['next_link'] = '下一页';
+		// $config['first_link'] = '第一页';
+		// $config['last_link'] = '最后一页';
 
-		//$this->model->wuan_model->get_startinfo_20();
+		// $this->pagination->initialize($config);
+		
+		// $data['links'] = $this->pagination->create_links();
+		
+		// $offset = $this->uri->segment(3);
+		// $this->db->limit($perPage,$offset);
+		
 
-		//$data['starinfo'] = $this->wuan_model->get_starinfo();
-		$data['starinfo'] = $this->wuan_model->get_starinfo_20();
-		//p($data['starinfo']);
+		//$data['starinfo'] = $this->wuan_model->get_starinfo_20();
+		//print_r($data['starinfo']);
+		
+		//$d = $this->wuan_model->distinct();
 
+		//获取delete= 0 的星球id
+		$starid = $this->wuan_model->get_starid_delete(0);
+		//print_r($starid);
+		//for ($i=0; $i<count($starid); $i++) {
+		foreach ($starid as $key) {
+			
+		
+			//获取星球id name 和介绍
+			$info= $this->wuan_model->get_star_id_name_g($key['id']);
 
-
+			//根据星球id获取管理员id
+			$userid = $this->wuan_model->groupid_to_userid($key['id']);
+			$owner = $this->wuan_model->get_login_admin_nickname($userid['user_base_id']);
+			$data['starinfo'][$key['id']]['id'] = $info['id'];
+			$data['starinfo'][$key['id']]['name'] = $info['name'];
+			$data['starinfo'][$key['id']]['g_introduction'] = $info['g_introduction'];
+			$data['starinfo'][$key['id']]['owner'] = $owner['nickname'];
+		}
 
 		$this->load->view('wuan_console/head',$_SESSION['data']);
 		$this->load->view('wuan_console/left');

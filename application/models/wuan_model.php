@@ -89,6 +89,33 @@ class wuan_model extends CI_Model {
 		$data = $this->db->select('id,name,g_introduction')->from('group_base')->order_by('id','asc')->get()->result_array();
 		return $data;
 	}
+	public function get_star_id_name_g($id)
+	{
+		$q = "select id,name,g_introduction from group_base where id = $id";
+		$query = $this->db->query($q);
+		return $query->row_array();
+	}
+
+	public function groupid_to_userid($id)
+	{
+		$data = $this->db->query("select user_base_id from group_detail where group_base_id = $id");
+		return $data->row_array();
+	}
+
+	public function distinct()
+	{
+		$q = "select distinct group_base_id from group_detail";
+		$query = $this->db->query($q);
+		return $query->result_array();
+	}
+
+	public function get_starid_delete($d = 0)
+	{
+		$q = "select id from group_base where `delete` = $d";
+		$query = $this->db->query($q);
+		return $query->result_array();
+	}
+
 
 
 }
