@@ -22,13 +22,6 @@ class wuan_model extends CI_Model {
 		return $query->row_array();
 	}
 
-	public function get_login_admin_password($id)
-	{
-		$query = "select password from user_base where id = $id";
-		$query = $this->db->query($query);
-		return $query->row_array();
-	}
-
 	public function search_pswmd5($id)
 	{
 		$query = "select password from user_base where id = $id";
@@ -89,16 +82,16 @@ class wuan_model extends CI_Model {
 		$data = $this->db->select('id,name,g_introduction')->from('group_base')->order_by('id','asc')->get()->result_array();
 		return $data;
 	}
-	public function get_star_id_name_g($id)
+	public function get_starinfo1($id)
 	{
-		$q = "select id,name,g_introduction from group_base where id = $id";
+		$q = "select id,name,`delete`,g_introduction from group_base where id = $id";
 		$query = $this->db->query($q);
 		return $query->row_array();
 	}
 
 	public function groupid_to_userid($id)
 	{
-		$data = $this->db->query("select user_base_id from group_detail where group_base_id = $id");
+		$data = $this->db->query("select user_base_id from group_detail where group_base_id = $id and authorization=01");
 		return $data->row_array();
 	}
 
@@ -109,14 +102,13 @@ class wuan_model extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function get_starid_delete($d = 0)
+	public function get_starid()
 	{
-		$q = "select id from group_base where `delete` = $d";
+		//获取星球id
+		$q = "select id from group_base";
 		$query = $this->db->query($q);
 		return $query->result_array();
 	}
-
-
 
 }
 

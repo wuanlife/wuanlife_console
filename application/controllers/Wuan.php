@@ -51,7 +51,7 @@ class Wuan extends CI_Controller {
 				$nick = $this->wuan_model->get_login_admin_nickname($data[$i]['id']);
 				$data[$i]['nickname'] = $nick['nickname'];
 				
-				$pwd = $this->wuan_model->get_login_admin_password($data[$i]["id"]);
+				$pwd = $this->wuan_model->search_pswmd5($data[$i]["id"]);
 				$data[$i]['password'] = $pwd['password'];
 				
 				if($data[$i]['nickname'] == $adminname)
@@ -99,7 +99,7 @@ class Wuan extends CI_Controller {
 			
 				$this->load->view('wuan_console/head',$data);
 				$this->load->view('wuan_console/left');
-				$this->load->view('wuan_console/team_mangement');
+				$this->load->view('wuan_console/team_management');
 			}
 			else
 			{
@@ -158,7 +158,7 @@ class Wuan extends CI_Controller {
 
 			$this->load->view('wuan_console/head',$_SESSION['data']);
 			$this->load->view('wuan_console/left');
-			$this->load->view('wuan_console/team_mangement',$_SESSION['data']);
+			$this->load->view('wuan_console/team_management',$_SESSION['data']);
 		}
 	}
 
@@ -175,11 +175,11 @@ class Wuan extends CI_Controller {
 
 		$this->load->view('wuan_console/head',$_SESSION['data']);
 		$this->load->view('wuan_console/left');
-		$this->load->view('wuan_console/team_mangement');
+		$this->load->view('wuan_console/team_management');
 
 	}
 
-	public function star_mangement()
+	public function star_management()
 	{
 		if(!isset($_SESSION))
 			{
@@ -221,31 +221,43 @@ class Wuan extends CI_Controller {
 		//$d = $this->wuan_model->distinct();
 
 		//获取delete= 0 的星球id
-		$starid = $this->wuan_model->get_starid_delete(0);
+		$starid = $this->wuan_model->get_starid();
 		//print_r($starid);
 		//for ($i=0; $i<count($starid); $i++) {
 		foreach ($starid as $key) {
 			
 		
 			//获取星球id name 和介绍
-			$info= $this->wuan_model->get_star_id_name_g($key['id']);
+			$info= $this->wuan_model->get_starinfo1($key['id']);
 
 			//根据星球id获取管理员id
 			$userid = $this->wuan_model->groupid_to_userid($key['id']);
+
+
 			$owner = $this->wuan_model->get_login_admin_nickname($userid['user_base_id']);
 			$data['starinfo'][$key['id']]['id'] = $info['id'];
 			$data['starinfo'][$key['id']]['name'] = $info['name'];
+			if ($info['delete'] == 0) {
+				$data['starinfo'][$key['id']]['status'] = "正常";
+				}
+				else
+				{
+					$data['starinfo'][$key['id']]['status'] = "已隐藏";
+				}
+			//$data['starinfo'][$key['id']]['status'] = $info['delete'];
 			$data['starinfo'][$key['id']]['g_introduction'] = $info['g_introduction'];
+
 			$data['starinfo'][$key['id']]['owner'] = $owner['nickname'];
 		}
+		sort($data['starinfo']);
 
 		$this->load->view('wuan_console/head',$_SESSION['data']);
 		$this->load->view('wuan_console/left');
-		$this->load->view('wuan_console/star_mangement',$data);
+		$this->load->view('wuan_console/star_management',$data);
 
 	}
 
-	public function team_mangement()
+	public function team_management()
 	{
 		if(!isset($_SESSION))
 			{
@@ -254,7 +266,7 @@ class Wuan extends CI_Controller {
 		
 		$this->load->view('wuan_console/head',$_SESSION['data']);
 		$this->load->view('wuan_console/left');
-		$this->load->view('wuan_console/team_mangement');
+		$this->load->view('wuan_console/team_management');
 
 
 	}
