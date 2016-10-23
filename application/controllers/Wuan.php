@@ -267,10 +267,31 @@ class Wuan extends CI_Controller {
 		$this->load->view('wuan_console/head',$_SESSION['data']);
 		$this->load->view('wuan_console/left');
 		$this->load->view('wuan_console/team_management');
-
-
 	}
-
+	//星球名修改 @author 阿萌
+	public function star_name_upd($id){
+		$data['starinfo']= $this->wuan_model->get_starinfo1($id);
+		$this->load->view('wuan_console/star_name_upd',$data);
+	}
+	public function star_name_upding($id){
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('starname','starname','required');
+		$starname = $this->input->post('starname');
+		$this->wuan_model->upd_star_name($id,$starname);
+		redirect('wuan/star_management');
+	}
+	//星球主人修改 @author 阿萌
+	public function star_user_upd($id){
+		$data['userlist']= $this->wuan_model->get_user_all_id($id);
+		$data['starinfo']= $this->wuan_model->get_star_user_id($id);
+		$this->load->view('wuan_console/star_user_upd',$data);
+	}
+	public function star_user_upding($gid){
+		$this->load->library('form_validation');
+		$uid= $this->input->post('userid');
+		$this->wuan_model->upd_star_user($gid,$uid);
+		redirect('wuan/star_management');
+	}
 }
 
  ?>

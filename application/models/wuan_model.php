@@ -88,7 +88,7 @@ class wuan_model extends CI_Model {
 		$query = $this->db->query($q);
 		return $query->row_array();
 	}
-
+	
 	public function groupid_to_userid($id)
 	{
 		$data = $this->db->query("select user_base_id from group_detail where group_base_id = $id and authorization=01");
@@ -109,7 +109,26 @@ class wuan_model extends CI_Model {
 		$query = $this->db->query($q);
 		return $query->result_array();
 	}
-
+	//修改星球名称函数 @author 阿萌
+	public function upd_star_name($id,$name){
+		$q="update group_base set name='{$name}' where Id={$id}";
+		$query=$this->db->query($q);
+	}
+	//获得全部星球主人姓名信息 @author 阿萌
+	public function get_user_all_id(){
+		$data = $this->db->query("select id,nickname from user_base order by id asc");
+		return $data->result_array();
+	}
+	//获得星球主人信息for id @author 阿萌
+	public function get_star_user_id($starid){
+		$data = $this->db->query("select gb.id gid,gb.name gname,ub.id uid,ub.nickname uname from group_base gb,group_detail gd,user_base ub where gb.id=gd.group_base_id and gd.user_base_id=ub.id and gb.id=1 and gd.authorization=01");
+		return $data->row_array();
+	}
+	//修改星球主人函数 @author 阿萌
+	public function upd_star_user($gid,$uid){
+		$q="update group_detail set user_base_id={$uid} where group_base_id={$gid} and authorization=01";
+		$query=$this->db->query($q);
+	}
 }
 
 ?>

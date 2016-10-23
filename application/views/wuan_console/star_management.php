@@ -4,6 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>star_management</title>
 <style>
+a{ text-decoration: none;}
+
 #main{
 	margin-left: 240px;
 	padding-top: 30px;
@@ -60,8 +62,8 @@ td{
 		else
 			echo $key['status'];
 			?></td>
-		<td>改名</td>
-		<td>转让</td>
+		<td><a href="<?php echo site_url('Wuan/star_name_upd/'.$key['id']);?>">改名</a></td>
+		<td><a href="<?php echo site_url('Wuan/star_user_upd/'.$key['id']);?>">转让</a></td>
 		<td>删除</td>
 	</tr>
 <?php endforeach; ?>
