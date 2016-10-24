@@ -277,8 +277,12 @@ class Wuan extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('starname','starname','required');
 		$starname = $this->input->post('starname');
-		$this->wuan_model->upd_star_name($id,$starname);
-		redirect('wuan/star_management');
+		if($this->wuan_model->check_star_name_equal($starname)>0){
+			$this->error_msg('星球名重复了，请重新输入！');
+		}else{
+			$this->wuan_model->upd_star_name($id,$starname);
+			redirect('wuan/star_management');
+		}
 	}
 	//星球主人修改 @author 阿萌
 	public function star_user_upd($id){
@@ -291,6 +295,11 @@ class Wuan extends CI_Controller {
 		$uid= $this->input->post('userid');
 		$this->wuan_model->upd_star_user($gid,$uid);
 		redirect('wuan/star_management');
+	}
+	//错误提示页
+	public function error_msg($message){
+		$data['msg']=$message;
+		$this->load->view('wuan_console/error_msg',$data);
 	}
 }
 

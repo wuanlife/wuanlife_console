@@ -111,8 +111,13 @@ class wuan_model extends CI_Model {
 	}
 	//修改星球名称函数 @author 阿萌
 	public function upd_star_name($id,$name){
-		$q="update group_base set name='{$name}' where Id={$id}";
+		$q="update group_base set name='{$name}' where id={$id}";
 		$query=$this->db->query($q);
+	}
+	//星球名称重复检测 @author 阿萌
+	public function check_star_name_equal($name){
+		$query=$this->db->query("select * from group_base where name='{$name}'");
+		return $query->num_rows();
 	}
 	//获得全部星球主人姓名信息 @author 阿萌
 	public function get_user_all_id(){
@@ -121,7 +126,7 @@ class wuan_model extends CI_Model {
 	}
 	//获得星球主人信息for id @author 阿萌
 	public function get_star_user_id($starid){
-		$data = $this->db->query("select gb.id gid,gb.name gname,ub.id uid,ub.nickname uname from group_base gb,group_detail gd,user_base ub where gb.id=gd.group_base_id and gd.user_base_id=ub.id and gb.id=1 and gd.authorization=01");
+		$data = $this->db->query("select gb.id gid,gb.name gname,ub.id uid,ub.nickname uname from group_base gb,group_detail gd,user_base ub where gb.id=gd.group_base_id and gd.user_base_id=ub.id and gb.id={$starid} and gd.authorization=01");
 		return $data->row_array();
 	}
 	//修改星球主人函数 @author 阿萌
