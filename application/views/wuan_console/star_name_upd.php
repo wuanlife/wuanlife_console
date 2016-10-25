@@ -10,7 +10,7 @@
 			<p>星球名修改:（原名称："<?php echo $starinfo['name']?>"）</p>
 			<br />
 			<label for="nickname">呢称：</label>
-			<input type="text" name="starname" value="<?php echo $starinfo['name']?>"/>
+			<input type="text" name="starname" value="<?php echo $starinfo['name']?>"/><?php echo form_error('starname','<span>','</span>');?>
 			<br /><br /><br />
 			<input type="submit" name="submit" value="修改" />
 		</form>

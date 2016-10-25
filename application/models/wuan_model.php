@@ -109,6 +109,7 @@ class wuan_model extends CI_Model {
 		$query = $this->db->query($q);
 		return $query->result_array();
 	}
+	
 	//修改星球名称函数 @author 阿萌
 	public function upd_star_name($id,$name){
 		$q="update group_base set name='{$name}' where id={$id}";

@@ -43,10 +43,10 @@ td{
 		<td>星球名称</td>
 		<td>星球介绍</td>
 		<td>星球主人</td>
-		<td>状态</td>
-		<td>改名</td>
-		<td>转让</td>
-		<td>删除</td>
+		<td width = 50>状态</td>
+		<td width = 50>改名</td>
+		<td width = 50>转让</td>
+		<td width = 50>删除</td>
 	</tr>
 <?php foreach ($starinfo as $key): ?>
 	<tr>

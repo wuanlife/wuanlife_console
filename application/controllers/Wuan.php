@@ -113,7 +113,7 @@ class Wuan extends CI_Controller {
 		else
 		{
 			$this->load->helper('form');
-			$this->load->view('wuan_console/login_1');
+			$this->load->view('wuan_console/login');
 		}
 
 			//echo "123";
@@ -268,22 +268,44 @@ class Wuan extends CI_Controller {
 		$this->load->view('wuan_console/left');
 		$this->load->view('wuan_console/team_management');
 	}
+
+
 	//星球名修改 @author 阿萌
 	public function star_name_upd($id){
 		$data['starinfo']= $this->wuan_model->get_starinfo1($id);
 		$this->load->view('wuan_console/star_name_upd',$data);
 	}
+
 	public function star_name_upding($id){
+		
+		//加载表单验证类
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('starname','starname','required');
-		$starname = $this->input->post('starname');
-		if($this->wuan_model->check_star_name_equal($starname)>0){
-			$this->error_msg('星球名重复了，请重新输入！');
-		}else{
+		$this->form_validation->set_rules('starname','星球名称','required');
+		
+		//表单验证开始运行，没有这句是不执行的
+		$status = $this->form_validation->run();
+
+		if($status)
+		{
+			//符合条件 
+			$starname = $this->input->post('starname');
+			if($this->wuan_model->check_star_name_equal($starname)>0){
+				$this->error_msg('星球名重复了，请重新输入！');
+			}
+			else{
 			$this->wuan_model->upd_star_name($id,$starname);
 			redirect('wuan/star_management');
+			}
+		}
+		else
+		{
+			//不符合条件 在页面上输出错误
+			$this->load->helper('form');
+			$data['starinfo']= $this->wuan_model->get_starinfo1($id);
+			$this->load->view('wuan_console/star_name_upd',$data);
 		}
 	}
+	
 	//星球主人修改 @author 阿萌
 	public function star_user_upd($id){
 		$data['userlist']= $this->wuan_model->get_user_all_id($id);
