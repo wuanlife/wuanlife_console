@@ -323,6 +323,63 @@ class Wuan extends CI_Controller {
 		$data['msg']=$message;
 		$this->load->view('wuan_console/error_msg',$data);
 	}
+
+	//星球关闭功能 @author 陈超 2016-10-25
+	public function star_management_close(){
+			
+		if(!isset($_SESSION))
+			{
+				session_start();
+			}
+		//读取传递ID
+		$star_id = $this->uri->segment(3);
+		//更新数据组
+		$data = array(
+				'delete'=>1
+			);
+		//执行更新
+		$res = $this->db->update('group_base',$data,array('id'=>$star_id));
+		//判断是否成功，并返回
+		if($res){
+			echo "成功关闭星球";
+			echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>确定</a>";
+		}else{
+			echo "关闭星球失败";
+			echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+		}
+
+
+		$this->load->view('wuan_console/star_management_close');
+
+	}
+	public function star_management_open(){
+			
+		if(!isset($_SESSION))
+			{
+				session_start();
+			}
+		//读取传递ID
+		$star_id = $this->uri->segment(3);
+		//更新数据组
+		$data = array(
+				'delete'=>0
+			);
+		//执行更新
+		$res = $this->db->update('group_base',$data,array('id'=>$star_id));
+		//判断是否成功，并返回
+		if($res){
+			echo "成功打开星球";
+			echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>确定</a>";
+		}else{
+			echo "打开星球失败";
+			echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+		}
+
+
+		$this->load->view('wuan_console/star_management_close');
+
+	}
+
 }
 
  ?>

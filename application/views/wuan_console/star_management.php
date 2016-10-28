@@ -46,7 +46,7 @@ td{
 		<td width = 50>状态</td>
 		<td width = 50>改名</td>
 		<td width = 50>转让</td>
-		<td width = 50>删除</td>
+		<td width = 50>操作</td>
 	</tr>
 <?php foreach ($starinfo as $key): ?>
 	<tr>
@@ -64,7 +64,21 @@ td{
 			?></td>
 		<td><a href="<?php echo site_url('Wuan/star_name_upd/'.$key['id']);?>">改名</a></td>
 		<td><a href="<?php echo site_url('Wuan/star_user_upd/'.$key['id']);?>">转让</a></td>
-		<td>删除</td>
+		<td>
+			
+			<!-- <a href="<?php echo $_SERVER['SCRIPT_NAME'] ?>/wuan/star_close/<?php echo $key['id'] ?>">关闭</a> -->
+
+			<a href="
+			<?php	
+				if($key['status']=="已隐藏"){ 
+					echo site_url('Wuan/star_management_open/'.$key['id']).'">打开';
+				}else{ 
+					echo site_url('Wuan/star_management_close/'.$key['id']).'">关闭';
+				} 
+			?>
+			</a>
+
+		</td>
 	</tr>
 <?php endforeach; ?>
 </table>
