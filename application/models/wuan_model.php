@@ -8,26 +8,47 @@ class wuan_model extends CI_Model {
 	}
 
 	//在表 user_detail 中依据 权限 找对应的 id
-	public function get_superadmin_id($auth)
+	public function get_superadmin_id($auth02,$auth03)
 	{
-		$q = "select user_base_id from user_detail where authorization = $auth";
-		$query = $this->db->query($q);
-		return $query->result_array();
+		//$q = "select user_base_id from user_detail where authorization = $auth";
+		//$query = $this->db->query($q);
+		//return $query->result_array();
+		
+		$data = $this->db->select('user_base_id')->from('user_detail')->where("authorization = $auth02 or authorization = $auth03")->get()->result_array();
+		
+		return $data;
 	}
 
+
+	//--------------------------------------------------
 	public function get_login_admin_nickname($id)
 	{
-		$query = "select `nickname` from user_base where id = $id";
-		$query = $this->db->query($query);
-		return $query->row_array();
+		// $query = "select `nickname` from user_base where id = $id";
+		// $query = $this->db->query($query);
+		// return $query->row_array();
+		$data = $this->db->select('nickname')->from('user_base')->where("id = $id")->get()->row_array();
+		return $data;
 	}
 
 	public function search_pswmd5($id)
 	{
-		$query = "select password from user_base where id = $id";
-		$query = $this->db->query($query);
-		return $query->row_array();
+		// $query = "select password from user_base where id = $id";
+		// $query = $this->db->query($query);
+		// return $query->row_array();
+
+		$data = $this->db->select('password')->from('user_base')->where("id = $id")->get()->row_array();
+		return $data;
 	}
+	
+	public function get_login_info($id)
+	{	//$data = $this->db->get_where('user_base',"id = $id")->row_array();
+		$q ="select ub.id id,ub.nickname nickname,ub.password password,ud.authorization uauth from user_base ub,user_detail ud where ub.id=ud.user_base_id and ub.id=$id";
+		$query = $this->db->query($q);
+		return $query->result_array();
+	}
+
+	//-----------------------------------------------------
+
 
 	public function search_id($value)
 	{
@@ -51,16 +72,25 @@ class wuan_model extends CI_Model {
 
 	public function insertdata()
 	{
-		$data['admin_id'] = $this->wuan_model->get_superadmin_id('02');
+		//显示成员管理
 
-		$n = count($data['admin_id']);
+		//获取普通管理员的id
 
-		for($i=0; $i<$n; $i++)
-		{
-			$data['admin'][$i]['id'] = $data['admin_id'][$i]['user_base_id'];
+		// $data['admin_id'] = $this->db->select('user_base_id')->from('user_detail')->where('authorization = 02')->get()->result_array();
 
-			$data['admin'][$i]['nickname'] = $this->wuan_model->get_login_admin_nickname($data['admin_id'][$i]['user_base_id'])['nickname'];
-		}
+		// $n = count($data['admin_id']);
+
+		// for($i=0; $i<$n; $i++)
+		// {
+		// 	$data['admin'][$i]['id'] = $data['admin_id'][$i]['user_base_id'];
+
+		// 	$data['admin'][$i]['nickname'] = $this->wuan_model->get_login_admin_nickname($data['admin_id'][$i]['user_base_id'])['nickname'];
+		// }
+		///////////////////////////////////////////////
+
+		//获取权限为02（普通管理员）的id和nickname
+		$q ="select ub.id id,ub.nickname nickname,ud.authorization uauth from user_base ub,user_detail ud where ub.id=ud.user_base_id and ud.authorization = 02 ";
+		$data['admin'] = $this->db->query($q)->result_array();
 		return $data['admin'];
 	}
 

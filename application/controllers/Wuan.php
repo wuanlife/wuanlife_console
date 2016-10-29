@@ -33,12 +33,12 @@ class Wuan extends CI_Controller {
  
 		if ($status) 
 		{
-
+			//验证成功 用户名 密码 不为空
 			$adminname = $this->input->post('adminname');
 			$adminpwd  = $this->input->post('adminpwd');
 
-			//在表user_detail中查找03权限的id
-			$data['superadmin_id'] = $this->wuan_model->get_superadmin_id('03');
+			//在表user_detail中查找权限为02 03的id
+			$data['superadmin_id'] = $this->wuan_model->get_superadmin_id('02','03');
 
 			$n = count($data['superadmin_id']);
 
@@ -48,11 +48,10 @@ class Wuan extends CI_Controller {
 
 				$data[$i]['id'] = $data['superadmin_id'][$i]['user_base_id'];
 
-				$nick = $this->wuan_model->get_login_admin_nickname($data[$i]['id']);
-				$data[$i]['nickname'] = $nick['nickname'];
+				$n = $this->wuan_model->get_login_info($data[$i]['id']);
 				
-				$pwd = $this->wuan_model->search_pswmd5($data[$i]["id"]);
-				$data[$i]['password'] = $pwd['password'];
+				$data[$i]['nickname'] = $n['nickname'];
+				$data[$i]['password'] = $n['password'];
 				
 				if($data[$i]['nickname'] == $adminname)
 				{
@@ -70,25 +69,27 @@ class Wuan extends CI_Controller {
 			}
 
 			$_SESSION['i'] = $i;
+			//print_r($i);
 			//$_SESSION['i_id'] = $data[$i]['id'];
 
 		
 
 			$login_id = $data[$i]['id'];
 		
-			$superadmin_md5 = $this->wuan_model->search_pswmd5($login_id);
-		
+			//$superadmin_md5 = $this->wuan_model->search_pswmd5($login_id);
+			$superadmin_md5 = $data[$i]['password'];
 			$md5_pwd = md5($adminpwd);
 
-			if($md5_pwd == $superadmin_md5['password'])
+			if($md5_pwd == $superadmin_md5)
 			{
 				//验证成功
 
 				$data['admin'] = $this->wuan_model->insertdata();
 
 				//获取$i 登陆的用户
-				$data['adminname_1'] = $this->wuan_model->get_login_admin_nickname($data[$_SESSION['i']]['id']);
-				$data['adminname'] = $data['adminname_1']['nickname'];
+				$data['ua'] = $this->wuan_model->get_login_info($data[$_SESSION['i']]['id']);
+				
+				$data['adminname'] = $data['ua']['nickname'];
 
 				if(!isset($_SESSION))
 				{
@@ -96,10 +97,12 @@ class Wuan extends CI_Controller {
 				}
 
 				$_SESSION['data'] =$data;
+
+				///
 			
 				$this->load->view('wuan_console/head',$data);
 				$this->load->view('wuan_console/left');
-				$this->load->view('wuan_console/team_management');
+				//$this->load->view('wuan_console/star_management');
 			}
 			else
 			{
@@ -123,14 +126,12 @@ class Wuan extends CI_Controller {
 
 	public function add()
 	{
+
 		$this->load->view('wuan_console/add');
 	}
 
 	public function adding()
 	{
-		//表单验证
-		$this->load->library('form_validation');
-		$this->form_validation->set_rules('nickname','昵称','required');
 		
 		$nickname = $this->input->post('nickname');
 
@@ -159,6 +160,7 @@ class Wuan extends CI_Controller {
 			$this->load->view('wuan_console/head',$_SESSION['data']);
 			$this->load->view('wuan_console/left');
 			$this->load->view('wuan_console/team_management',$_SESSION['data']);
+		
 		}
 	}
 
@@ -327,16 +329,14 @@ class Wuan extends CI_Controller {
 	//星球关闭功能 @author 陈超 2016-10-25
 	public function star_management_close(){
 			
-		if(!isset($_SESSION))
-			{
-				session_start();
-			}
 		//读取传递ID
 		$star_id = $this->uri->segment(3);
+
 		//更新数据组
 		$data = array(
 				'delete'=>1
 			);
+
 		//执行更新
 		$res = $this->db->update('group_base',$data,array('id'=>$star_id));
 		//判断是否成功，并返回
@@ -354,10 +354,7 @@ class Wuan extends CI_Controller {
 	}
 	public function star_management_open(){
 			
-		if(!isset($_SESSION))
-			{
-				session_start();
-			}
+
 		//读取传递ID
 		$star_id = $this->uri->segment(3);
 		//更新数据组
