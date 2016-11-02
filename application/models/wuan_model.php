@@ -44,7 +44,7 @@ class wuan_model extends CI_Model {
 	{	//$data = $this->db->get_where('user_base',"id = $id")->row_array();
 		$q ="select ub.id id,ub.nickname nickname,ub.password password,ud.authorization uauth from user_base ub,user_detail ud where ub.id=ud.user_base_id and ub.id=$id";
 		$query = $this->db->query($q);
-		return $query->result_array();
+		return $query->row_array();
 	}
 
 	//-----------------------------------------------------

@@ -27,20 +27,19 @@ class Wuan extends CI_Controller {
 		//设置验证规则
 		$this->form_validation->set_rules('adminname'.'用户名','required');
 		$this->form_validation->set_rules('adminpwd','密码','required');
-
+		
+		$data['superadmin_id'] = $this->wuan_model->get_superadmin_id('02','03');
+		print_r($data['superadmin_id']);
 		//开始验证
 		$status = $this->form_validation->run();
- 
+ 		$n = count($data['superadmin_id']);
 		if ($status) 
 		{
-			//验证成功 用户名 密码 不为空
+
 			$adminname = $this->input->post('adminname');
 			$adminpwd  = $this->input->post('adminpwd');
 
-			//在表user_detail中查找权限为02 03的id
-			$data['superadmin_id'] = $this->wuan_model->get_superadmin_id('02','03');
-
-			$n = count($data['superadmin_id']);
+			//在表user_detail中查找03权限的id
 
 			for($i=0; $i<$n;$i++)
 			{
@@ -49,8 +48,9 @@ class Wuan extends CI_Controller {
 				$data[$i]['id'] = $data['superadmin_id'][$i]['user_base_id'];
 
 				$n = $this->wuan_model->get_login_info($data[$i]['id']);
-				
 				$data[$i]['nickname'] = $n['nickname'];
+				
+				//$pwd = $this->wuan_model->search_pswmd5($data[$i]["id"]);
 				$data[$i]['password'] = $n['password'];
 				
 				if($data[$i]['nickname'] == $adminname)
@@ -61,6 +61,33 @@ class Wuan extends CI_Controller {
 					//获取$i
 				}
 			}
+
+			//保存$i和对应的id到session
+			if(!isset($_SESSION))
+			{
+				session_start();
+			}
+
+			$_SESSION['i'] = $i;
+			//$_SESSION['i_id'] = $data[$i]['id'];
+
+		
+
+			$login_id = $data[$i]['id'];
+		
+			$superadmin_md5 = $data[$i]['password'];
+		
+			$md5_pwd = md5($adminpwd);
+
+			if($md5_pwd == $superadmin_md5)
+			{
+				//验证成功
+
+				$data['admin'] = $this->wuan_model->insertdata();
+
+				//获取$i 登陆的用户
+				//$data['adminname_1'] = $this->wuan_model->get_login_admin_nickname($data[$_SESSION['i']]['id']);
+				$data['adminname'] = $data[$i]['nickname'];
 
 			//保存$i和对应的id到session
 			if(!isset($_SESSION))
@@ -104,6 +131,7 @@ class Wuan extends CI_Controller {
 				$this->load->view('wuan_console/left');
 				//$this->load->view('wuan_console/star_management');
 			}
+		}
 			else
 			{
 				$this->load->helper('form');
