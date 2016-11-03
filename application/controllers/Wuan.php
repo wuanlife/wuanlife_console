@@ -29,7 +29,7 @@ class Wuan extends CI_Controller {
 		$this->form_validation->set_rules('adminpwd','密码','required');
 		
 		$data['superadmin_id'] = $this->wuan_model->get_superadmin_id('02','03');
-		print_r($data['superadmin_id']);
+
 		//开始验证
 		$status = $this->form_validation->run();
  		$n = count($data['superadmin_id']);
