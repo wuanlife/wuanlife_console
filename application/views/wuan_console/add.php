@@ -10,7 +10,7 @@
 			<p>新增管理员</p>
 			<br />
 			<label for="nickname">呢称：</label>
-			<input type="text" name = "nickname" />
+			<input type="text" name = "nickname" /><?php echo form_error('add','<span>','</span>');?>
 			<br /><br /><br />
 			<input type ="submit" name= "submit" value="添加" />
 		</form>

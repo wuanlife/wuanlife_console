@@ -34,7 +34,7 @@
 	</div>
 	
 	<div id="wuan_3">
-		<span><?php echo $adminname; ?>
+		<span><?php echo $nickname; ?>
 		<a href="<?php echo site_url('Wuan/login');?>">退出</a></span>
 	</div>
 </div>

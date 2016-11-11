@@ -19,6 +19,13 @@ class wuan_model extends CI_Model {
 		return $data;
 	}
 
+	public function searchinfo($adminname)
+	{
+		$q ="select ub.id id,ub.nickname nickname,ub.password password,ud.authorization uauth from user_base ub,user_detail ud where ub.nickname = '{$adminname}' and ub.id=ud.user_base_id";
+		$query = $this->db->query($q);
+		return $query->row_array();
+	}
+
 
 	//--------------------------------------------------
 	public function get_login_admin_nickname($id)
