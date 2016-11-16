@@ -101,9 +101,13 @@ class Wuan extends CI_Controller {
 		if($status)
 		{
 			//获取nickname对应的id
-
 			$id = $this->wuan_model->search_id($nickname);
 
+			if(!empty($id))
+			{
+			//用户名对应的id查找出来了，继续。没有查出来显示用户不存在。
+
+			//获取id相对应的权限
 			$auth = $this->wuan_model->search_auth($id['id']);
 
 			if($auth['authorization'] == 1)
@@ -123,6 +127,12 @@ class Wuan extends CI_Controller {
 			$this->load->view('wuan_console/head',$_SESSION['data']);
 			$this->load->view('wuan_console/left');
 			$this->load->view('wuan_console/team_management',$_SESSION['data']);
+			}
+			else
+			{
+				echo "用户不存在";
+				$this->load->view('wuan_console/add');
+			}
 		
 		}
 	}
