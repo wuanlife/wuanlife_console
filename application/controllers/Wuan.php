@@ -90,11 +90,12 @@ class Wuan extends CI_Controller {
 
 	public function adding()
 	{
-		
+
 		$nickname = $this->input->post('nickname');
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('add'.'昵称','required');
+
+		$this->form_validation->set_rules('nickname','昵称','required');
 		$status = $this->form_validation->run();
 
 		if($status)
@@ -112,25 +113,18 @@ class Wuan extends CI_Controller {
 
 
 			if(!isset($_SESSION))
-				{
-					session_start();
-				}
+			{
+				session_start();
+				
 				//echo "---";
 
 				$_SESSION['data']['admin']= $this->wuan_model->insertdata();
-
+			}
 			$this->load->view('wuan_console/head',$_SESSION['data']);
 			$this->load->view('wuan_console/left');
 			$this->load->view('wuan_console/team_management',$_SESSION['data']);
 		
 		}
-		else
-			{
-				$this->load->helper('form');
-				echo '昵称不能为空！';
-				$this->load->view('wuan_console/add');
-			}
-
 	}
 
 	public function delete($item)
