@@ -144,10 +144,12 @@ class Wuan extends CI_Controller {
 		if(!isset($_SESSION))
 			{
 				session_start();
-			}
+			
 
 			$_SESSION['data']['admin']= $this->wuan_model->insertdata();
-
+			
+			$_SESSION['data']['title'] = "成员管理";
+			}
 		$this->load->view('wuan_console/head',$_SESSION['data']);
 		$this->load->view('wuan_console/left');
 		$this->load->view('wuan_console/team_management');
@@ -159,6 +161,7 @@ class Wuan extends CI_Controller {
 		if(!isset($_SESSION))
 			{
 				session_start();
+				$_SESSION['data']['title'] = "星球管理";
 			}
 
 		//获取delete= 0 的星球id
@@ -181,14 +184,20 @@ class Wuan extends CI_Controller {
 			if ($info['delete'] == 0) {
 				$data['starinfo'][$key['id']]['status'] = "正常";
 				}
-				else
+			else
 				{
 					$data['starinfo'][$key['id']]['status'] = "已隐藏";
 				}
+			if ($info['private'] == 0) {
+                $data['starinfo'][$key['id']]['private'] = "";
+            }else{
+                $data['starinfo'][$key['id']]['private'] = "私密";
+            }
 			//$data['starinfo'][$key['id']]['status'] = $info['delete'];
 			$data['starinfo'][$key['id']]['g_introduction'] = $info['g_introduction'];
 
 			$data['starinfo'][$key['id']]['owner'] = $owner['nickname'];
+			$data['starinfo'][$key['id']]['owner_id'] = $userid['user_base_id'];
 		}
 		sort($data['starinfo']);
 
@@ -203,6 +212,7 @@ class Wuan extends CI_Controller {
 		if(!isset($_SESSION))
 			{
 				session_start();
+				$_SESSION['data']['title'] = "成员管理";
 			}
 		
 		$this->load->view('wuan_console/head',$_SESSION['data']);
@@ -313,6 +323,52 @@ class Wuan extends CI_Controller {
 
 
 		$this->load->view('wuan_console/star_management_close');
+
+	}
+
+	public function star_private_set(){
+		//读取传递ID
+        $star_id = $this->uri->segment(3);
+        //更新数据组
+        $data = array(
+                'private'=>1
+            );
+        //执行更新
+        $res = $this->db->update('group_base',$data,array('id'=>$star_id));
+        //判断是否成功，并返回
+        if($res){
+            echo "<script>alert('成功设置为私密星球！'); history.go(-1);</script>";
+        }else{
+            echo "设置为私密星球失败";
+            echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+        }
+
+
+        //$this->load->view('wuan_console/star_private_unset');
+
+	}
+	public function star_private_unset(){
+		//读取传递ID
+        $star_id = $this->uri->segment(3);
+        //更新数据组
+        $data = array(
+                'private'=>0
+            );
+        //执行更新
+        $res = $this->db->update('group_base',$data,array('id'=>$star_id));
+        //判断是否成功，并返回
+        if($res){
+            //echo "成功取消星球私密性";
+			//echo "<script>alert('成功！点击确定返回！'); window.location.href='team_management';</script>";
+			echo "<script>alert('成功取消星球私密性！'); history.go(-1);</script>";
+            //echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>确定</a>";
+        }else{
+            echo "取消星球私密性失败";
+            echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+        }
+
+
+       // $this->load->view('wuan_console/star_private_set');
 
 	}
 
