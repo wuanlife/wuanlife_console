@@ -25,15 +25,15 @@ class Wuan extends CI_Controller {
 		$this->load->library('form_validation');
 
 		//设置验证规则
-		$this->form_validation->set_rules('adminname'.'用户名','required');
+		$this->form_validation->set_rules('adminname','用户名','required');
 		$this->form_validation->set_rules('adminpwd','密码','required');
 		
 		$data['superadmin_id'] = $this->wuan_model->get_superadmin_id('02','03');
 
 		//开始验证
 		$status = $this->form_validation->run();
- 		$n = count($data['superadmin_id']);
-		if ($status) 
+
+		if($status) 
 		{
 
 			$adminname = $this->input->post('adminname');
@@ -66,20 +66,19 @@ class Wuan extends CI_Controller {
 				$this->load->view('wuan_console/left');
 				//$this->load->view('wuan_console/star_management');
 			}
+			else
+			{
+				echo "账号和密码不匹配,请重新输入";
+				$this->load->view('wuan_console/login');
+			}
 		}
 			else
 			{
+				//用户名和密码为空时
 				$this->load->helper('form');
-				echo '用户名或密码错误！';
+				
 				$this->load->view('wuan_console/login');
 			}
-
-
-
-
-			//echo "123";
-
-			//print_r($data['admin']);
 	}
 
 	public function add()

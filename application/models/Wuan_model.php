@@ -59,21 +59,21 @@ class wuan_model extends CI_Model {
 
 	public function search_id($value)
 	{
-		$q = "select id from user_base where nickname = '" . $value . " '";
+		$q = "select id from user_base where nickname = '{$value}'";
 		$query = $this->db->query($q);
 		return $query->row_array();
 	}
 
 	public function search_auth($value)
 	{
-		$q = "select authorization from user_detail where user_base_id = $value";
+		$q = "select authorization from user_detail where user_base_id = '{$value}'";
 		$query = $this->db->query($q);
 		return $query->row_array();
 	}
 
 	public function change_auth($value)
 	{
-		$q = "update user_detail set authorization = '02' where user_base_id = $value";
+		$q = "update user_detail set authorization = '02' where user_base_id = '{$value}'";
 		$query = $this->db->query($q);
 	}
 
@@ -121,7 +121,7 @@ class wuan_model extends CI_Model {
 	}
 	public function get_starinfo1($id)
 	{
-		$q = "select id,name,`delete`,g_introduction from group_base where id = $id";
+		$q = "select id,name,`delete`,`private`,g_introduction from group_base where id = $id";
 		$query = $this->db->query($q);
 		return $query->row_array();
 	}
@@ -169,8 +169,19 @@ class wuan_model extends CI_Model {
 	}
 	//修改星球主人函数 @author 阿萌
 	public function upd_star_user($gid,$uid){
-		$q="update group_detail set user_base_id={$uid} where group_base_id={$gid} and authorization=01";
-		$query=$this->db->query($q);
+		$a = $this->db->query("update group_detail set authorization='03' where group_base_id={$gid} and authorization='01'");
+		$b = $this->db->query("select authorization from group_detail where group_base_id={$gid} and user_base_id={$uid} and authorization='03'");
+		$c = $b->num_rows();
+		if(!empty($c)){
+			$query=$this->db->query("update group_detail set authorization='01' where group_base_id={$gid} and user_base_id={$uid}");
+		}else{
+			$data = array(
+						'group_base_id' => $gid,
+						'user_base_id'  => $uid,
+			            'authorization' => '01'
+			);
+			$d = $this->db->insert('group_detail', $data);
+		}
 	}
 }
 

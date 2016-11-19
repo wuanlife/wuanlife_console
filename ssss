@@ -1,0 +1,245 @@
+[1mdiff --git a/application/controllers/Wuan.php b/application/controllers/Wuan.php[m
+[1mindex 9ed5152..da0e6b5 100644[m
+[1m--- a/application/controllers/Wuan.php[m
+[1m+++ b/application/controllers/Wuan.php[m
+[36m@@ -101,9 +101,13 @@[m [mclass Wuan extends CI_Controller {[m
+ 		if($status)[m
+ 		{[m
+ 			//获取nickname对应的id[m
+[31m-[m
+ 			$id = $this->wuan_model->search_id($nickname);[m
+ [m
+[32m+[m			[32mif(!empty($id))[m
+[32m+[m			[32m{[m
+[32m+[m			[32m//用户名对应的id查找出来了，继续。没有查出来显示用户不存在。[m
+[32m+[m
+[32m+[m			[32m//获取id相对应的权限[m
+ 			$auth = $this->wuan_model->search_auth($id['id']);[m
+ [m
+ 			if($auth['authorization'] == 1)[m
+[36m@@ -123,6 +127,12 @@[m [mclass Wuan extends CI_Controller {[m
+ 			$this->load->view('wuan_console/head',$_SESSION['data']);[m
+ 			$this->load->view('wuan_console/left');[m
+ 			$this->load->view('wuan_console/team_management',$_SESSION['data']);[m
+[32m+[m			[32m}[m
+[32m+[m			[32melse[m
+[32m+[m			[32m{[m
+[32m+[m				[32mecho "用户不存在";[m
+[32m+[m				[32m$this->load->view('wuan_console/add');[m
+[32m+[m			[32m}[m
+ 		[m
+ 		}[m
+ 	}[m
+[1mdiff --git a/application/models/Wuan_model.php b/application/models/Wuan_model.php[m
+[1mindex a50e454..514cb52 100644[m
+[1m--- a/application/models/Wuan_model.php[m
+[1m+++ b/application/models/Wuan_model.php[m
+[36m@@ -59,21 +59,21 @@[m [mclass wuan_model extends CI_Model {[m
+ [m
+ 	public function search_id($value)[m
+ 	{[m
+[31m-		$q = "select id from user_base where nickname = '" . $value . " '";[m
+[32m+[m		[32m$q = "select id from user_base where nickname = '{$value}'";[m
+ 		$query = $this->db->query($q);[m
+ 		return $query->row_array();[m
+ 	}[m
+ [m
+ 	public function search_auth($value)[m
+ 	{[m
+[31m-		$q = "select authorization from user_detail where user_base_id = $value";[m
+[32m+[m		[32m$q = "select authorization from user_detail where user_base_id = '{$value}'";[m
+ 		$query = $this->db->query($q);[m
+ 		return $query->row_array();[m
+ 	}[m
+ [m
+ 	public function change_auth($value)[m
+ 	{[m
+[31m-		$q = "update user_detail set authorization = '02' where user_base_id = $value";[m
+[32m+[m		[32m$q = "update user_detail set authorization = '02' where user_base_id = '{$value}'";[m
+ 		$query = $this->db->query($q);[m
+ 	}[m
+ [m
+[1mdiff --git a/application/models/wuan_model.php b/application/models/wuan_model.php[m
+[1mdeleted file mode 100644[m
+[1mindex a50e454..0000000[m
+[1m--- a/application/models/wuan_model.php[m
+[1m+++ /dev/null[m
+[36m@@ -1,177 +0,0 @@[m
+[31m-<?php [m
+[31m-[m
+[31m-class wuan_model extends CI_Model {[m
+[31m-[m
+[31m-	public function __construct()[m
+[31m-	{[m
+[31m-		$this->load->database();[m
+[31m-	}[m
+[31m-[m
+[31m-	//在表 user_detail 中依据 权限 找对应的 id[m
+[31m-	public function get_superadmin_id($auth02,$auth03)[m
+[31m-	{[m
+[31m-		//$q = "select user_base_id from user_detail where authorization = $auth";[m
+[31m-		//$query = $this->db->query($q);[m
+[31m-		//return $query->result_array();[m
+[31m-		[m
+[31m-		$data = $this->db->select('user_base_id')->from('user_detail')->where("authorization = $auth02 or authorization = $auth03")->get()->result_array();[m
+[31m-		[m
+[31m-		return $data;[m
+[31m-	}[m
+[31m-[m
+[31m-	public function searchinfo($adminname)[m
+[31m-	{[m
+[31m-		$q ="select ub.id id,ub.nickname nickname,ub.password password,ud.authorization uauth from user_base ub,user_detail ud where ub.nickname = '{$adminname}' and ub.id=ud.user_base_id";[m
+[31m-		$query = $this->db->query($q);[m
+[31m-		return $query->row_array();[m
+[31m-	}[m
+[31m-[m
+[31m-[m
+[31m-	//--------------------------------------------------[m
+[31m-	public function get_login_admin_nickname($id)[m
+[31m-	{[m
+[31m-		// $query = "select `nickname` from user_base where id = $id";[m
+[31m-		// $query = $this->db->query($query);[m
+[31m-		// return $query->row_array();[m
+[31m-		$data = $this->db->select('nickname')->from('user_base')->where("id = $id")->get()->row_array();[m
+[31m-		return $data;[m
+[31m-	}[m
+[31m-[m
+[31m-	public function search_pswmd5($id)[m
+[31m-	{[m
+[31m-		// $query = "select password from user_base where id = $id";[m
+[31m-		// $query = $this->db->query($query);[m
+[31m-		// return $query->row_array();[m
+[31m-[m
+[31m-		$data = $this->db->select('password')->from('user_base')->where("id = $id")->get()->row_array();[m
+[31m-		return $data;[m
+[31m-	}[m
+[31m-	[m
+[31m-	public function get_login_info($id)[m
+[31m-	{	//$data = $this->db->get_where('user_base',"id = $id")->row_array();[m
+[31m-		$q ="select ub.id id,ub.nickname nickname,ub.password password,ud.authorization uauth from user_base ub,user_detail ud where ub.id=ud.user_base_id and ub.id=$id";[m
+[31m-		$query = $this->db->query($q);[m
+[31m-		return $query->row_array();[m
+[31m-	}[m
+[31m-[m
+[31m-	//-----------------------------------------------------[m
+[31m-[m
+[31m-[m
+[31m-	public function search_id($value)[m
+[31m-	{[m
+[31m-		$q = "select id from user_base where nickname = '" . $value . " '";[m
+[31m-		$query = $this->db->query($q);[m
+[31m-		return $query->row_array();[m
+[31m-	}[m
+[31m-[m
+[31m-	public function search_auth($value)[m
+[31m-	{[m
+[31m-		$q = "select authorization from user_detail where user_base_id = $value";[m
+[31m-		$query = $this->db->query($q);[m
+[31m-		return $query->row_array();[m
+[31m-	}[m
+[31m-[m
+[31m-	public function change_auth($value)[m
+[31m-	{[m
+[31m-		$q = "update user_detail set authorization = '02' where user_base_id = $value";[m
+[31m-		$query = $this->db->query($q);[m
+[31m-	}[m
+[31m-[m
+[31m-	public function insertdata()[m
+[31m-	{[m
+[31m-		//显示成员管理[m
+[31m-[m
+[31m-		//获取普通管理员的id[m
+[31m-[m
+[31m-		// $data['admin_id'] = $this->db->select('user_base_id')->from('user_detail')->where('authorization = 02')->get()->result_array();[m
+[31m-[m
+[31m-		// $n = count($data['admin_id']);[m
+[31m-[m
+[31m-		// for($i=0; $i<$n; $i++)[m
+[31m-		// {[m
+[31m-		// 	$data['admin'][$i]['id'] = $data['admin_id'][$i]['user_base_id'];[m
+[31m-[m
+[31m-		// 	$data['admin'][$i]['nickname'] = $this->wuan_model->get_login_admin_nickname($data['admin_id'][$i]['user_base_id'])['nickname'];[m
+[31m-		// }[m
+[31m-		///////////////////////////////////////////////[m
+[31m-[m
+[31m-		//获取权限为02（普通管理员）的id和nickname[m
+[31m-		$q ="select ub.id id,ub.nickname nickname,ud.authorization uauth from user_base ub,user_detail ud where ub.id=ud.user_base_id and ud.authorization = 02 ";[m
+[31m-		$data['admin'] = $this->db->query($q)->result_array();[m
+[31m-		return $data['admin'];[m
+[31m-	}[m
+[31m-[m
+[31m-	public function change_auth_user($value)[m
+[31m-	{[m
+[31m-		$q = "update user_detail set authorization = '01' where user_base_id = $value";[m
+[31m-		$query = $this->db->query($q);[m
+[31m-	}[m
+[31m-[m
+[31m-	public function get_starinfo()[m
+[31m-	{[m
+[31m-		$q = "select id,name,g_introduction from group_base";[m
+[31m-		$query = $this->db->query($q);[m
+[31m-		return $query->result_array();[m
+[31m-	}[m
+[31m-[m
+[31m-	public function get_starinfo_20()[m
+[31m-	{[m
+[31m-		$data = $this->db->select('id,name,g_introduction')->from('group_base')->order_by('id','asc')->get()->result_array();[m
+[31m-		return $data;[m
+[31m-	}[m
+[31m-	public function get_starinfo1($id)[m
+[31m-	{[m
+[31m-		$q = "select id,name,`delete`,g_introduction from group_base where id = $id";[m
+[31m-		$query = $this->db->query($q);[m
+[31m-		return $query->row_array();[m
+[31m-	}[m
+[31m-	[m
+[31m-	public function groupid_to_userid($id)[m
+[31m-	{[m
+[31m-		$data = $this->db->query("select user_base_id from group_detail where group_base_id = $id and authorization=01");[m
+[31m-		return $data->row_array();[m
+[31m-	}[m
+[31m-[m
+[31m-	public function distinct()[m
+[31m-	{[m
+[31m-		$q = "select distinct group_base_id from group_detail";[m
+[31m-		$query = $this->db->query($q);[m
+[31m-		return $query->result_array();[m
+[31m-	}[m
+[31m-[m
+[31m-	public function get_starid()[m
+[31m-	{[m
+[31m-		//获取星球id[m
+[31m-		$q = "select id from group_base";[m
+[31m-		$query = $this->db->query($q);[m
+[31m-		return $query->result_array();[m
+[31m-	}[m
+[31m-	[m
+[31m-	//修改星球名称函数 @author 阿萌[m
+[31m-	public function upd_star_name($id,$name){[m
+[31m-		$q="update group_base set name='{$name}' where id={$id}";[m
+[31m-		$query=$this->db->query($q);[m
+[31m-	}[m
+[31m-	//星球名称重复检测 @author 阿萌[m
+[31m-	public function check_star_name_equal($name){[m
+[31m-		$query=$this->db->query("select * from group_base where name='{$name}'");[m
+[31m-		return $query->num_rows();[m
+[31m-	}[m
+[31m-	//获得全部星球主人姓名信息 @author 阿萌[m
+[31m-	public function get_user_all_id(){[m
+[31m-		$data = $this->db->query("select id,nickname from user_base order by id asc");[m
+[31m-		return $data->result_array();[m
+[31m-	}[m
+[31m-	//获得星球主人信息for id @author 阿萌[m
+[31m-	public function get_star_user_id($starid){[m
+[31m-		$data = $this->db->query("select gb.id gid,gb.name gname,ub.id uid,ub.nickname uname from group_base gb,group_detail gd,user_base ub where gb.id=gd.group_base_id and gd.user_base_id=ub.id and gb.id={$starid} and gd.authorization=01");[m
+[31m-		return $data->row_array();[m
+[31m-	}[m
+[31m-	//修改星球主人函数 @author 阿萌[m
+[31m-	public function upd_star_user($gid,$uid){[m
+[31m-		$q="update group_detail set user_base_id={$uid} where group_base_id={$gid} and authorization=01";[m
+[31m-		$query=$this->db->query($q);[m
+[31m-	}[m
+[31m-}[m
+[31m-[m
+[31m-?>[m
+\ No newline at end of file[m

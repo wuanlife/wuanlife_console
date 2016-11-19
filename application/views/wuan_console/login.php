@@ -31,7 +31,7 @@
 <form action="<?php echo site_url('Wuan/logining'); ?>" method="post">
 	<div id="main">
 		<div id="title">
-			午安网管理中心1.1.3
+			午安网管理中心1.1.4
 		</div>
 		<div class="username_password">
 		<span>用户名：</span>

@@ -30,7 +30,15 @@
 	</div>
 	
 	<div id="wuan_2">
-		成员管理
+		<?php 
+		if(!empty($title))
+		{
+			echo "$title";
+		}
+		else
+		{
+			echo "";
+		} ?>
 	</div>
 	
 	<div id="wuan_3">
