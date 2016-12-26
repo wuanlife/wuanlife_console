@@ -28,13 +28,12 @@
 	<div id="wuan_1">
 		午安网管理中心
 	</div>
-	
 	<div id="wuan_2">
-		成员管理
+		<?php echo $status;?>
 	</div>
 	
 	<div id="wuan_3">
-		<span><?php echo $adminname; ?>
+		<span><?php echo $nickname; ?>
 		<a href="<?php echo site_url('Wuan/login');?>">退出</a></span>
 	</div>
 </div>

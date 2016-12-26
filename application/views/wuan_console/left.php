@@ -11,7 +11,7 @@
 </style>
 
 <div id = "left">
-<?php if($ua['uauth'] == 03) 
+<?php if($uauth == 03) 
 {
 	echo ("<li><a href=".site_url('wuan/team_management').">成员管理</a></li>");}?>
 		
