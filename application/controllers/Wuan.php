@@ -39,35 +39,7 @@ class Wuan extends CI_Controller {
             $adminname = $this->input->post('adminname');
             $adminpwd  = $this->input->post('adminpwd');
             $data = $this->wuan_model->searchinfo("$adminname");    
-            //在表user_detail中查找03权限的id
-            // for($i=0;$i<$n;$i++)
-            // {
-            //     //通过循环将每一项的id、nickname、password写入数组$data中
-            //     $data[$i]['id'] = $dat['superadmin_id'][$i]['user_base_id'];
-
-            //     $num = $this->wuan_model->get_login_info($data[$i]['id']);
-            //     $data[$i]['nickname'] = $num['nickname'];
-
-            //     //$pwd = $this->wuan_model->search_pswmd5($data[$i]["id"]);
-            //     $data[$i]['password'] = $num['password'];
-
-            //     if($data[$i]['nickname'] == $adminname)
-            //     {
-            //         //echo ($data[$i]['nickname']);
-            //         //echo $adminlogin_id = $i;
-            //         break;
-            //         //获取$i
-            //     }
-            // }
-            //保存$i和对应的id到session
-            // if(!isset($_SESSION))
-            // {
-            //     session_start();
-            // }
-
-            // $_SESSION['i'] = $i;
-            //$_SESSION['i_id'] = $data[$i]['id'];
-
+            
 			if(empty($data['id']))
             {
 				$this->load->helper('form');
@@ -118,37 +90,48 @@ class Wuan extends CI_Controller {
 
     public function adding()
     {
+        //增加管理员
         if(!isset($_SESSION))
                 {
                     session_start();
                 }
+        //print_r($_SESSION);
         $nickname = $this->input->post('nickname');
 
         if(!empty($nickname))
         {
-            //获取nickname对应的id
+            //如果输入不为空
 
+            //获取nickname对应的id
             $id = $this->wuan_model->search_id($nickname);
 
-            $auth = $this->wuan_model->search_auth($id['id']);
-
-            if($auth['authorization'] == 1)
+            
+            if(!isset($id))
             {
-                $this->wuan_model->change_auth($id['id']);
+                echo '用户名不存在，请重试！';
+                $this->load->view('wuan_console/add');
             }
+            else
+            {
+                $auth = $this->wuan_model->search_auth($id['id']);
 
-
+                if($auth['authorization'] == 1)
+                {
+                    $this->wuan_model->change_auth($id['id']);
+                }
             
                 //echo "---";
 
                 $_SESSION['data']['admin']= $this->wuan_model->insertdata();
-        }else{
-			echo '用户名不存在，请重试！';
-			//$this->load->view('wuan_console/add');
-		}
-            $this->load->view('wuan_console/head',$_SESSION['data']);
-            $this->load->view('wuan_console/left');
-            $this->load->view('wuan_console/team_management',$_SESSION['data']);
+                $this->load->view('wuan_console/head',$_SESSION['data']);
+                $this->load->view('wuan_console/left');
+                $this->load->view('wuan_console/team_management',$_SESSION['data']);
+            }
+        }
+        else{
+            echo "用户名为空，请重新输入！";
+            $this->load->view('wuan_console/add');
+        }
     }
 
     public function delete($item)
