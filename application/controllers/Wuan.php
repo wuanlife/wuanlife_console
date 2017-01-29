@@ -123,13 +123,11 @@ class Wuan extends CI_Controller {
                 //echo "---";
 
                 $_SESSION['data']['admin']= $this->wuan_model->insertdata();
-                $this->load->view('wuan_console/head',$_SESSION['data']);
-                $this->load->view('wuan_console/left');
-                $this->load->view('wuan_console/team_management',$_SESSION['data']);
+                redirect('wuan/team_management');
             }
         }
         else{
-            echo "用户名为空，请重新输入！";
+            echo "用户名不能为空，请重新输入！";
             $this->load->view('wuan_console/add');
         }
     }
@@ -144,10 +142,10 @@ class Wuan extends CI_Controller {
             }
 
             $_SESSION['data']['admin']= $this->wuan_model->insertdata();
-
-        $this->load->view('wuan_console/head',$_SESSION['data']);
-        $this->load->view('wuan_console/left');
-        $this->load->view('wuan_console/team_management');
+        redirect('wuan/team_management');
+        // $this->load->view('wuan_console/head',$_SESSION['data']);
+        // $this->load->view('wuan_console/left');
+        // $this->load->view('wuan_console/team_management');
 
     }
 

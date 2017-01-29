@@ -13,6 +13,7 @@
 			<input type="text" name = "nickname" />
 			<br /><br /><br />
 			<input type ="submit" name= "submit" value="添加" />
+			<button type="button" onclick="javascript:window.location.href='team_management'">返回</button>
 		</form>
 	</center>
 </body>
