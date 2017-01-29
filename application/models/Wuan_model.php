@@ -18,14 +18,13 @@ class wuan_model extends CI_Model {
 		
 		return $data;
 	}
-
+	
 	public function searchinfo($adminname)
 	{
 		$q ="select ub.id id,ub.nickname nickname,ub.password password,ud.authorization uauth from user_base ub,user_detail ud where ub.nickname = '{$adminname}' and ub.id=ud.user_base_id";
 		$query = $this->db->query($q);
 		return $query->row_array();
 	}
-
 
 	//--------------------------------------------------
 	public function get_login_admin_nickname($id)
@@ -59,21 +58,21 @@ class wuan_model extends CI_Model {
 
 	public function search_id($value)
 	{
-		$q = "select id from user_base where nickname = '{$value}'";
+		$q = "select id from user_base where nickname = '" . $value . " '";
 		$query = $this->db->query($q);
 		return $query->row_array();
 	}
 
 	public function search_auth($value)
 	{
-		$q = "select authorization from user_detail where user_base_id = '{$value}'";
+		$q = "select authorization from user_detail where user_base_id = $value";
 		$query = $this->db->query($q);
 		return $query->row_array();
 	}
 
 	public function change_auth($value)
 	{
-		$q = "update user_detail set authorization = '02' where user_base_id = '{$value}'";
+		$q = "update user_detail set authorization = '02' where user_base_id = $value";
 		$query = $this->db->query($q);
 	}
 

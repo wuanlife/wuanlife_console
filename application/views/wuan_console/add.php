@@ -10,9 +10,10 @@
 			<p>新增管理员</p>
 			<br />
 			<label for="nickname">呢称：</label>
-			<input type="text" name = "nickname" /><?php echo form_error('add','<span>','</span>');?>
+			<input type="text" name = "nickname" />
 			<br /><br /><br />
 			<input type ="submit" name= "submit" value="添加" />
+			<button type="button" onclick="javascript:window.location.href='team_management'">返回</button>
 		</form>
 	</center>
 </body>

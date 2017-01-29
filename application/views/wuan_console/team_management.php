@@ -40,11 +40,14 @@
 	<div id="adminlist">
 		
 		<table class="thinsolid" >
+		    <tr>
+		    <td>用户id</td>
 			<td>呢称</td>
 			<td>操作</td>
 			</tr>
 				<?php foreach ($admin as $user_item): ?>
 					<tr>
+					    <td><?php echo $user_item['id']; ?></td>
 						<td><?php echo $user_item['nickname']; ?></td>
 						<td><a href="<?php echo site_url('wuan/delete/'.$user_item['id']) ?>">删除</a></td>
 							<!-- <td><?php echo "delete"; ?></td> -->

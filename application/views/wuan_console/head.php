@@ -28,17 +28,8 @@
 	<div id="wuan_1">
 		午安网管理中心
 	</div>
-	
 	<div id="wuan_2">
-		<?php 
-		if(!empty($title))
-		{
-			echo "$title";
-		}
-		else
-		{
-			echo "";
-		} ?>
+		<?php echo $status;?>
 	</div>
 	
 	<div id="wuan_3">
