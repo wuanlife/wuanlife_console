@@ -12,154 +12,179 @@ class Wuan extends CI_Controller {
     }
 
 
-    //登陆
+    //登录
     public function login()
     {
+
+        if(!isset($_SESSION))
+        {
+            session_start();
+            session_destroy();
+            //var_dump($_SESSION);
+        }
         $this->load->view('wuan_console/login');
     }
 
     public function logining()
     {
-        //登陆过程
+        //登录过程
         //载入表单验证类
         $this->load->library('form_validation');
 
         //设置验证规则
         $this->form_validation->set_rules('adminname'.'用户名','required');
         $this->form_validation->set_rules('adminpwd','密码','required');
-
-        $dat['superadmin_id'] = $this->wuan_model->get_superadmin_id('02','03');
-
         //开始验证
         $status = $this->form_validation->run();
-        $n = count($dat['superadmin_id']);
         if ($status)
         {
-
             $adminname = $this->input->post('adminname');
             $adminpwd  = $this->input->post('adminpwd');
-            $data = $this->wuan_model->searchinfo("$adminname");    
-            
-			if(empty($data['id']))
+            $data = $this->wuan_model->searchinfo("$adminname");
+
+            if($data['uauth']=='01' || empty($data['uauth']))
             {
-				$this->load->helper('form');
-				echo '您不是管理员！';
-				$this->load->view('wuan_console/login');
-			}
+                $this->load->helper('form');
+                echo '您不是管理员或用户未注册！';
+                $this->load->view('wuan_console/login');
+            }
             else
             {
-				$login_id = $data['id'];
+                $login_id = $data['id'];
 
-				$superadmin_md5 = $data['password'];
+                $superadmin_md5 = $data['password'];
 
-				$md5_pwd = md5($adminpwd);
+                $md5_pwd = md5($adminpwd);
 
-				if($md5_pwd == $superadmin_md5)
-				{
-						//验证成功
+                if($md5_pwd == $superadmin_md5)
+                {
+                        //验证成功
 
-						if(!isset($_SESSION))
-						{
-							session_start();
-						}
-
-						$_SESSION['data'] =$data;
+                        if(!isset($_SESSION))
+                        {
+                            session_start();
+                        }
+                        unset($data['password']);
+                        $_SESSION['data'] =$data;
                         $_SESSION['data']['admin']= $this->wuan_model->insertdata();
 
                         $data['status']='';
-						$this->load->view('wuan_console/head',$data);
-						$this->load->view('wuan_console/left');
-						//$this->load->view('wuan_console/star_management');
-					
-				}
-				else
-				{
-					$this->load->helper('form');
-					echo '用户名或密码错误！';
-					$this->load->view('wuan_console/login');
-				}
+                        $this->load->view('wuan_console/head',$data);
+                        $this->load->view('wuan_console/left');
+                        //$this->load->view('wuan_console/star_management');
+
+                }
+                else
+                {
+                    $this->load->helper('form');
+                    echo '密码错误！';
+                    $this->load->view('wuan_console/login');
+                }
             }
-        }   
+        }
     }
 
     public function add()
     {
-
-        $this->load->view('wuan_console/add');
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
+        if(!empty($_SESSION['data']['uauth'])&&$_SESSION['data']['uauth']=='03'){
+            $this->load->view('wuan_console/add');
+        }else{
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
+        }
     }
 
     public function adding()
     {
         //增加管理员
         if(!isset($_SESSION))
-                {
-                    session_start();
-                }
-        //print_r($_SESSION);
-        $nickname = $this->input->post('nickname');
-
-        if(!empty($nickname))
         {
+            session_start();
+        }
+        if(!empty($_SESSION['data']['uauth'])&&$_SESSION['data']['uauth']=='03'){
+            $nickname = $this->input->post('nickname');
+            if(!empty($nickname))
+            {
             //如果输入不为空
 
             //获取nickname对应的id
             $id = $this->wuan_model->search_id($nickname);
 
-            
-            if(!isset($id))
-            {
-                echo '用户名不存在，请重试！';
-                $this->load->view('wuan_console/add');
-            }
-            else
-            {
-                $auth = $this->wuan_model->search_auth($id['id']);
 
-                if($auth['authorization'] == 1)
-                {
-                    $this->wuan_model->change_auth($id['id']);
-                }
-            
+                if(empty($id)){
+                    echo '该用户尚未注册，请检查！';
+                }else{
+                    $auth = $this->wuan_model->search_auth($id['id']);
+
+                    if($auth['authorization'] == 1)
+                    {
+                        $this->wuan_model->change_auth($id['id']);
+                        echo '添加成功！';
+                    }else{
+                        echo '该用户已是管理员，操作无效！';
+                    }
+
                 //echo "---";
 
-                $_SESSION['data']['admin']= $this->wuan_model->insertdata();
-                redirect('wuan/team_management');
+                    $_SESSION['data']['admin']= $this->wuan_model->insertdata();
+                }
+                    $this->load->view('wuan_console/head',$_SESSION['data']);
+                    $this->load->view('wuan_console/left');
+                    $this->load->view('wuan_console/team_management',$_SESSION['data']);
+
             }
-        }
-        else{
-            echo "用户名不能为空，请重新输入！";
-            $this->load->view('wuan_console/add');
+            else{
+                echo "用户名为空，请重新输入！";
+                $this->load->view('wuan_console/add');
+            }
+        }else{
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
         }
     }
 
     public function delete($item)
     {
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
+        if(!empty($_SESSION['data']['uauth'])&&$_SESSION['data']['uauth']=='03'){
         $this->wuan_model->change_auth_user($item);
 
-        if(!isset($_SESSION))
-            {
-                session_start();
-            }
+        $_SESSION['data']['admin']= $this->wuan_model->insertdata();
 
-            $_SESSION['data']['admin']= $this->wuan_model->insertdata();
-        redirect('wuan/team_management');
-        // $this->load->view('wuan_console/head',$_SESSION['data']);
-        // $this->load->view('wuan_console/left');
-        // $this->load->view('wuan_console/team_management');
+        $this->load->view('wuan_console/head',$_SESSION['data']);
+        $this->load->view('wuan_console/left');
+        $this->load->view('wuan_console/team_management');
+        }else{
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
+        }
 
     }
 
     public function star_management()
     {
         if(!isset($_SESSION))
-            {
-                session_start();
-            }
+        {
+            session_start();
+        }
 
         //获取delete= 0 的星球id
         $starid = $this->wuan_model->get_starid();
         //print_r($starid);
         //for ($i=0; $i<count($starid); $i++) {
+        $_SESSION['data']['status']='星球管理';
+        if(!empty($_SESSION['data']['uauth'])&&in_array($_SESSION['data']['uauth'],array('02','03')))
+        {
         foreach ($starid as $key) {
 
 
@@ -178,7 +203,7 @@ class Wuan extends CI_Controller {
             }else{
                 $data['starinfo'][$key['id']]['status'] = "已隐藏";
             }
-			if ($info['private'] == 0) {
+            if ($info['private'] == 0) {
                 $data['starinfo'][$key['id']]['private'] = "";
             }else{
                 $data['starinfo'][$key['id']]['private'] = "私密";
@@ -187,76 +212,113 @@ class Wuan extends CI_Controller {
             $data['starinfo'][$key['id']]['g_introduction'] = $info['g_introduction'];
 
             $data['starinfo'][$key['id']]['owner'] = $owner['nickname'];
-			$data['starinfo'][$key['id']]['owner_id'] = $userid['user_base_id'];
+            $data['starinfo'][$key['id']]['owner_id'] = $userid['user_base_id'];
         }
+        if(!empty($data['starinfo'])){
         sort($data['starinfo']);
+        }else{
+            $data['starinfo']=array();
+        }
         $_SESSION['data']['status']='星球管理';
         $this->load->view('wuan_console/head',$_SESSION['data']);
         $this->load->view('wuan_console/left');
         $this->load->view('wuan_console/star_management',$data);
+        }
+        else{
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
+        }
 
     }
 
     public function team_management()
     {
         if(!isset($_SESSION))
-            {
-                session_start();
-            }
+        {
+            session_start();
+        }
         $_SESSION['data']['status']='成员管理';
-        $this->load->view('wuan_console/head',$_SESSION['data']);
-        $this->load->view('wuan_console/left');
-        $this->load->view('wuan_console/team_management');
+        if(!empty($_SESSION['data']['uauth'])&&$_SESSION['data']['uauth']=='03'){
+            $this->load->view('wuan_console/head',$_SESSION['data']);
+            $this->load->view('wuan_console/left');
+            $this->load->view('wuan_console/team_management');
+        }else{
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
+        }
+
     }
 
 
     //星球名修改 @author 阿萌
     public function star_name_upd($id){
-        $data['starinfo']= $this->wuan_model->get_starinfo1($id);
-        $this->load->view('wuan_console/star_name_upd',$data);
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
+        if(!empty($_SESSION['data']['uauth'])&&in_array($_SESSION['data']['uauth'],array('02','03'))){
+            $data['starinfo']= $this->wuan_model->get_starinfo1($id);
+            $this->load->view('wuan_console/star_name_upd',$data);
+        }else{
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
+        }
     }
 
     public function star_name_upding($id){
 
-        //加载表单验证类
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('starname','星球名称','required');
-
-        //表单验证开始运行，没有这句是不执行的
-        $status = $this->form_validation->run();
+        $status = $this->input->post('starname');
 
         if($status)
         {
-            //符合条件
-            $starname = $this->input->post('starname');
-            if($this->wuan_model->check_star_name_equal($starname)>0){
+            if($this->wuan_model->check_star_name_equal($status)>0){
                 $this->error_msg('星球名重复了，请重新输入！');
             }
             else{
-            $this->wuan_model->upd_star_name($id,$starname);
+            $this->wuan_model->upd_star_name($id,$status);
             redirect('wuan/star_management');
             }
         }
         else
         {
-            //不符合条件 在页面上输出错误
-            $this->load->helper('form');
-            $data['starinfo']= $this->wuan_model->get_starinfo1($id);
-            $this->load->view('wuan_console/star_name_upd',$data);
+            $this->error_msg('星球名不能为空，请重新输入！');
         }
     }
 
     //星球主人修改 @author 阿萌
     public function star_user_upd($id){
-        $data['userlist']= $this->wuan_model->get_user_all_id($id);
-        $data['starinfo']= $this->wuan_model->get_star_user_id($id);
-        $this->load->view('wuan_console/star_user_upd',$data);
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
+        if(!empty($_SESSION['data']['uauth'])&&in_array($_SESSION['data']['uauth'],array('02','03'))){
+            $data['userlist']= $this->wuan_model->get_user_all_id($id);
+            $data['starinfo']= $this->wuan_model->get_star_user_id($id);
+            $this->load->view('wuan_console/star_user_upd',$data);
+        }else{
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
+        }
     }
     public function star_user_upding($gid){
-        $this->load->library('form_validation');
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
         $uid= $this->input->post('userid');
-        $this->wuan_model->upd_star_user($gid,$uid);
-        redirect('wuan/star_management');
+        if($uid){
+            $this->wuan_model->upd_star_user($gid,$uid);
+            redirect('wuan/star_management');
+        }else{
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
+        }
+
     }
     //错误提示页
     public function error_msg($message){
@@ -266,99 +328,121 @@ class Wuan extends CI_Controller {
 
     //星球关闭功能 @author 陈超 2016-10-25
     public function star_management_close(){
-
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
+        if(!empty($_SESSION['data']['uauth'])&&in_array($_SESSION['data']['uauth'],array('02','03'))){
         //读取传递ID
-        $star_id = $this->uri->segment(3);
+            $star_id = $this->uri->segment(3);
 
         //更新数据组
-        $data = array(
+            $data = array(
                 'delete'=>1
             );
 
         //执行更新
-        $res = $this->db->update('group_base',$data,array('id'=>$star_id));
+            $res = $this->db->update('group_base',$data,array('id'=>$star_id));
         //判断是否成功，并返回
-        if($res){
-            echo "成功关闭星球";
-            echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>确定</a>";
+            if($res){
+                echo "<script>alert('成功关闭星球！'); history.go(-1);</script>";
+            }else{
+                echo "关闭星球失败";
+                echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+            }
         }else{
-            echo "关闭星球失败";
-            echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
         }
-
-
-        $this->load->view('wuan_console/star_management_close');
 
     }
     public function star_management_open(){
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
+        if(!empty($_SESSION['data']['uauth'])&&in_array($_SESSION['data']['uauth'],array('02','03'))){
 
 
         //读取传递ID
-        $star_id = $this->uri->segment(3);
+            $star_id = $this->uri->segment(3);
         //更新数据组
-        $data = array(
+            $data = array(
                 'delete'=>0
             );
         //执行更新
-        $res = $this->db->update('group_base',$data,array('id'=>$star_id));
+            $res = $this->db->update('group_base',$data,array('id'=>$star_id));
         //判断是否成功，并返回
-        if($res){
-            echo "成功打开星球";
-            echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>确定</a>";
+            if($res){
+                echo "<script>alert('成功打开星球！'); history.go(-1);</script>";
+            }else{
+                echo "打开星球失败";
+                echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+            }
         }else{
-            echo "打开星球失败";
-            echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
         }
 
-
-        $this->load->view('wuan_console/star_management_close');
-
     }
-	public function star_private_set(){
-		//读取传递ID
-        $star_id = $this->uri->segment(3);
+    public function star_private_set(){
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
+        if(!empty($_SESSION['data']['uauth'])&&in_array($_SESSION['data']['uauth'],array('02','03'))){
+        //读取传递ID
+            $star_id = $this->uri->segment(3);
         //更新数据组
-        $data = array(
+            $data = array(
                 'private'=>1
             );
         //执行更新
-        $res = $this->db->update('group_base',$data,array('id'=>$star_id));
+            $res = $this->db->update('group_base',$data,array('id'=>$star_id));
         //判断是否成功，并返回
-        if($res){
-            echo "<script>alert('成功设置为私密星球！'); history.go(-1);</script>";
+            if($res){
+                echo "<script>alert('成功设置为私密星球！'); history.go(-1);</script>";
+            }else{
+                echo "设置为私密星球失败";
+                echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+            }
         }else{
-            echo "设置为私密星球失败";
-            echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
         }
 
-
-        //$this->load->view('wuan_console/star_private_unset');
-
-	}
-	public function star_private_unset(){
-		//读取传递ID
-        $star_id = $this->uri->segment(3);
+    }
+    public function star_private_unset(){
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
+        if(!empty($_SESSION['data']['uauth'])&&in_array($_SESSION['data']['uauth'],array('02','03'))){
+        //读取传递ID
+            $star_id = $this->uri->segment(3);
         //更新数据组
-        $data = array(
+            $data = array(
                 'private'=>0
             );
         //执行更新
-        $res = $this->db->update('group_base',$data,array('id'=>$star_id));
+            $res = $this->db->update('group_base',$data,array('id'=>$star_id));
         //判断是否成功，并返回
-        if($res){
-            //echo "成功取消星球私密性";
-			//echo "<script>alert('成功！点击确定返回！'); window.location.href='team_management';</script>";
-			echo "<script>alert('成功取消星球私密性！'); history.go(-1);</script>";
-            //echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>确定</a>";
+            if($res){
+                echo "<script>alert('成功取消星球私密性！'); history.go(-1);</script>";
+            }else{
+                echo "取消星球私密性失败";
+                echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+            }
         }else{
-            echo "取消星球私密性失败";
-            echo "<br><a href='".$_SERVER['HTTP_REFERER']."'>返回</a>";
+            echo '操作非法，您已被强制退出。';
+            session_destroy();
+            $this->load->view('wuan_console/login');
         }
 
-
-       // $this->load->view('wuan_console/star_private_set');
-
-	}
+    }
 
 }
 

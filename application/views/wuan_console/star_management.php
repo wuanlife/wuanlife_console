@@ -38,6 +38,11 @@ td{
 <body>
 <div id="main">
 <table>
+<?php
+    if(empty($starinfo)){
+        echo '无星球！';
+    }else{
+?>
     <tr id="tr">
         <td>星球id</td>
         <td>星球名称</td>
@@ -95,7 +100,7 @@ td{
 
         </td>
     </tr>
-<?php endforeach; ?>
+    <?php endforeach; }?>
 </table>
     </div>
     <div id="button">
