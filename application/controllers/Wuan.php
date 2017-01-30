@@ -8,7 +8,7 @@ class Wuan extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('wuan_model');
+        $this->load->model('Wuan_model');
     }
 
 

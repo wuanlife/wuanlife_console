@@ -1,6 +1,6 @@
 <?php 
 
-class wuan_model extends CI_Model {
+class Wuan_model extends CI_Model {
 
 	public function __construct()
 	{
