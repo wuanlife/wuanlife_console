@@ -25,21 +25,25 @@ class Wuan extends CI_Controller {
         $this->load->view('wuan_console/login');
     }
 
+    //登陆过程
     public function logining()
     {
-        //登录过程
         //载入表单验证类
         $this->load->library('form_validation');
 
         //设置验证规则
         $this->form_validation->set_rules('adminname'.'用户名','required');
         $this->form_validation->set_rules('adminpwd','密码','required');
+        
         //开始验证
         $status = $this->form_validation->run();
+        
         if ($status)
         {
             $adminname = $this->input->post('adminname');
             $adminpwd  = $this->input->post('adminpwd');
+
+            //查找用户名对应的信息（id、nickname、password、uauth）
             $data = $this->wuan_model->searchinfo("$adminname");
 
             if($data['uauth']=='01' || empty($data['uauth']))

@@ -78,23 +78,8 @@ class wuan_model extends CI_Model {
 
 	public function insertdata()
 	{
-		//显示成员管理
 
-		//获取普通管理员的id
-
-		// $data['admin_id'] = $this->db->select('user_base_id')->from('user_detail')->where('authorization = 02')->get()->result_array();
-
-		// $n = count($data['admin_id']);
-
-		// for($i=0; $i<$n; $i++)
-		// {
-		// 	$data['admin'][$i]['id'] = $data['admin_id'][$i]['user_base_id'];
-
-		// 	$data['admin'][$i]['nickname'] = $this->wuan_model->get_login_admin_nickname($data['admin_id'][$i]['user_base_id'])['nickname'];
-		// }
-		///////////////////////////////////////////////
-
-		//获取权限为02（普通管理员）的id和nickname
+		//获取权限为02（普通管理员）的id、nickname、uauth
 		$q ="select ub.id id,ub.nickname nickname,ud.authorization uauth from user_base ub,user_detail ud where ub.id=ud.user_base_id and ud.authorization = 02 ";
 		$data['admin'] = $this->db->query($q)->result_array();
 		return $data['admin'];
