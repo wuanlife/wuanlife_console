@@ -13,6 +13,7 @@
 			<input type="text" name="starname" value="<?php echo $starinfo['name']?>"/><?php echo form_error('starname','<span>','</span>');?>
 			<br /><br /><br />
 			<input type="submit" name="submit" value="修改" />
+			<input type="button" value="返回" onclick="history.go(-1)"/> 
 		</form>
 	</center>
 </body>

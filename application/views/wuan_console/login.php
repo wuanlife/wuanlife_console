@@ -42,7 +42,7 @@
 		<span><input type="password" name= "adminpwd" value="<?php echo set_value('adminpwd'); ?>" ><?php echo form_error('adminpwd','<span>','</span>');?></span>	
 		</div>
 		<div id="submit">
-			<input type ="submit" name= "submit" value="登陆" />
+			<input type ="submit" name= "submit" value="登录" />
 		</div>
 	</div>
 	</div>
