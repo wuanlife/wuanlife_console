@@ -15,6 +15,7 @@ class Wuan extends CI_Controller {
     //登录
     public function login()
     {
+        $this->load->helper(array('form', 'url'));
 
         if(!isset($_SESSION))
         {
@@ -28,11 +29,12 @@ class Wuan extends CI_Controller {
     //登陆过程
     public function logining()
     {
+        
         //载入表单验证类
         $this->load->library('form_validation');
 
         //设置验证规则
-        $this->form_validation->set_rules('adminname'.'用户名','required');
+        $this->form_validation->set_rules('adminname','用户名','required');
         $this->form_validation->set_rules('adminpwd','密码','required');
         
         //开始验证
@@ -85,6 +87,11 @@ class Wuan extends CI_Controller {
                     $this->load->view('wuan_console/login');
                 }
             }
+        }
+        else
+        {
+            $this->load->helper('form');
+            $this->load->view('wuan_console/login');
         }
     }
 
