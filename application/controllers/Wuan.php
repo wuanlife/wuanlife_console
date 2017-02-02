@@ -24,16 +24,6 @@ class Wuan extends CI_Controller {
         }
         $this->load->view('wuan_console/login');
     }
-	
-	public function hello(){
-		if(!isset($_SESSION))
-        {
-            session_start();
-        }
-		$this->load->view('wuan_console/head',$_SESSION['data']);
-        $this->load->view('wuan_console/left',$_SESSION['data']);
-        $this->load->view('wuan_console/welcome');
-	}
 
     public function welcome()
     {
@@ -392,17 +382,6 @@ class Wuan extends CI_Controller {
         $data['ms'] = '操作成功！';
         $this->load->view('wuan_console/star_management',$data);
     }
-
-    public function getgroup($a,$b,$c,$d){
-
-        //$starid = $this->wuan_model->get_starid($this->uri->segment(3));
-        $data = array(
-            $a,$b,$c,$d
-        );
-        var_dump($this->uri->segment(7));
-        var_dump($data);
-    }
-
 }
 
  ?>
