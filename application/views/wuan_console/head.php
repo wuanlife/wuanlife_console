@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>wuan_console</title>
+	<title><?=$status?></title>
 </head>
 <body>
 <style>
@@ -34,6 +34,6 @@
 	
 	<div id="wuan_3">
 		<span><?php echo $nickname; ?>
-		<a href="<?php echo site_url('Wuan/login');?>">退出</a></span>
+		<a href="<?php echo site_url('wuan/login');?>">退出</a></span>
 	</div>
 </div>

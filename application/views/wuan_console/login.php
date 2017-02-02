@@ -28,7 +28,7 @@
 	</style>
 </head>
 <body>
-<form action="<?php echo site_url('Wuan/logining'); ?>" method="post">
+<form action="<?php echo site_url('wuan/welcome'); ?>" method="post">
 	<div id="main">
 		<div id="title">
 			午安网管理中心1.1.4

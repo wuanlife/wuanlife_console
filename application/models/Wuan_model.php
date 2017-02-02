@@ -6,18 +6,6 @@ class wuan_model extends CI_Model {
 	{
 		$this->load->database();
 	}
-
-	//在表 user_detail 中依据 权限 找对应的 id
-	public function get_superadmin_id($auth02,$auth03)
-	{
-		//$q = "select user_base_id from user_detail where authorization = $auth";
-		//$query = $this->db->query($q);
-		//return $query->result_array();
-		
-		$data = $this->db->select('user_base_id')->from('user_detail')->where("authorization = $auth02 or authorization = $auth03")->get()->result_array();
-		
-		return $data;
-	}
 	
 	public function searchinfo($adminname)
 	{
@@ -26,36 +14,12 @@ class wuan_model extends CI_Model {
 		return $query->row_array();
 	}
 
-	//--------------------------------------------------
 	public function get_login_admin_nickname($id)
 	{
-		// $query = "select `nickname` from user_base where id = $id";
-		// $query = $this->db->query($query);
-		// return $query->row_array();
 		$data = $this->db->select('nickname')->from('user_base')->where("id = $id")->get()->row_array();
 		return $data;
 	}
-
-	public function search_pswmd5($id)
-	{
-		// $query = "select password from user_base where id = $id";
-		// $query = $this->db->query($query);
-		// return $query->row_array();
-
-		$data = $this->db->select('password')->from('user_base')->where("id = $id")->get()->row_array();
-		return $data;
-	}
 	
-	public function get_login_info($id)
-	{	//$data = $this->db->get_where('user_base',"id = $id")->row_array();
-		$q ="select ub.id id,ub.nickname nickname,ub.password password,ud.authorization uauth from user_base ub,user_detail ud where ub.id=ud.user_base_id and ub.id=$id";
-		$query = $this->db->query($q);
-		return $query->row_array();
-	}
-
-	//-----------------------------------------------------
-
-
 	public function search_id($value)
 	{
 		$q = "select id from user_base where nickname = '" . $value . " '";
@@ -78,8 +42,6 @@ class wuan_model extends CI_Model {
 
 	public function insertdata()
 	{
-
-		//获取权限为02（普通管理员）的id、nickname、uauth
 		$q ="select ub.id id,ub.nickname nickname,ud.authorization uauth from user_base ub,user_detail ud where ub.id=ud.user_base_id and ud.authorization = 02 ";
 		$data['admin'] = $this->db->query($q)->result_array();
 		return $data['admin'];
@@ -97,12 +59,7 @@ class wuan_model extends CI_Model {
 		$query = $this->db->query($q);
 		return $query->result_array();
 	}
-
-	public function get_starinfo_20()
-	{
-		$data = $this->db->select('id,name,g_introduction')->from('group_base')->order_by('id','asc')->get()->result_array();
-		return $data;
-	}
+	
 	public function get_starinfo1($id)
 	{
 		$q = "select id,name,`delete`,`private`,g_introduction from group_base where id = $id";
@@ -116,19 +73,28 @@ class wuan_model extends CI_Model {
 		return $data->row_array();
 	}
 
-	public function distinct()
-	{
-		$q = "select distinct group_base_id from group_detail";
-		$query = $this->db->query($q);
-		return $query->result_array();
-	}
-
-	public function get_starid()
+	public function get_starid($page)
 	{
 		//获取星球id
 		$q = "select id from group_base";
 		$query = $this->db->query($q);
-		return $query->result_array();
+		$all_num = $query->num_rows();
+		$page_num     =20;                 //每页条数
+        $page_all_num =ceil($all_num/$page_num);                //总页数
+        if ($page_all_num == 0){
+            $page_all_num =1;
+        }
+        if($page > $page_all_num){
+            $page = $page_all_num;
+        }
+        $page         =empty($page)?1:$page;                    //当前页数
+        $page         =(int)$page;                              //安全强制转换
+        $limit_st     =($page-1)*$page_num;                     //起始数
+		$p = "SELECT id FROM group_base ORDER BY id LIMIT $limit_st,$page_num ";
+		$query = $this->db->query($p);
+		$result['data'] = $query->result_array();
+		$result['pan'] = $page_all_num;
+		return $result;
 	}
 	
 	//修改星球名称函数 @author 阿萌
