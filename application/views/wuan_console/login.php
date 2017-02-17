@@ -45,7 +45,6 @@
 			<input type ="submit" name= "submit" value="登录" />
 		</div>
 	</div>
-	</div>
 	</form>
 </body>
 </html>

@@ -38,8 +38,8 @@ td{
 			</tr>
 				<?php foreach ($admin as $user_item): ?>
 					<tr id="<?=$user_item['id']?>">
-					    <td><?php echo $user_item['id']; ?></td>
-						<td><?php echo $user_item['nickname']; ?></td>
+					    <td><?=$user_item['id']?></td>
+						<td><?=$user_item['nickname']?></td>
 						<td><a href="javascript:void(0)" onClick=checkfourm('teammanagement',<?=$user_item['id']?>)>删除</a></td>
 					</tr>
 				<?php endforeach; ?>
