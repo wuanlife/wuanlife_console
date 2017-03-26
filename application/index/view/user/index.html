@@ -1,0 +1,12 @@
+
+{include file="user/header" title="查看用户列表" /}
+<h2>用户列表（{$list->total()}）</h2> 
+{volist name="list" id="user" }
+<div class="info">
+ID：{$user.id}<br/>
+昵称：{$user.nickname}<br/>
+邮箱：{$user.email}<br/>
+</div>
+{/volist}
+{$list->render()}
+{include file="user/footer" /}
