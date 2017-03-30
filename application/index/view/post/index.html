@@ -1,0 +1,16 @@
+{include file="base/header" title="查看用户列表" /}
+<h2>帖子管理</h2>
+<table>
+{volist name="list" id="vo"}
+	<tr>
+		<td>帖子id：{$vo.id}</td>
+		<td>帖子标题：{$vo.title}</td>
+		<td>帖子创建时间：{$vo.create_time}</td>
+		<td>帖子为精华帖：{$vo.digest}</td>
+		<td>帖子是否置顶：{$vo.sticky}</td>
+		<td>帖子是否被删除：{$vo.delete}</td>
+		<td>帖子是否被锁定：{$vo.lock}</td>
+	</tr>
+{/volist}
+</table>
+{include file="base/footer" /}

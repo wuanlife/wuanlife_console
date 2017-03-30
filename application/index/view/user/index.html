@@ -1,5 +1,5 @@
 
-{include file="user/header" title="查看用户列表" /}
+{include file="base/header" title="查看用户列表" /}
 <h2>用户列表（{$list->total()}）</h2>
 {volist name="list" id="user" }
 <div class="info">
@@ -9,4 +9,4 @@ ID：{$user.id}<br/>
 </div>
 {/volist}
 {$list->render()}
-{include file="user/footer" /}
+{include file="base/footer" /}
