@@ -1,10 +1,14 @@
 <?php
 namespace app\index\controller;
+use think\Controller;
+use think\View;
 
-class Index
+class Index extends Controller
 {
     public function index()
     {
-        return '11';
+		$view = new View();
+		$view->name = 'thinkphp';
+		return $view->fetch();
     }
 }
