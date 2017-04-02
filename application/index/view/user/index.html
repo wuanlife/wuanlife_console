@@ -1,12 +1,70 @@
 
-{include file="base/header" title="查看用户列表" /}
-<h2>用户列表（{$list->total()}）</h2>
-{volist name="list" id="user" }
-<div class="info">
-ID：{$user.id}<br/>
-昵称：{$user.nickname}<br/>
-邮箱：{$user.email}<br/>
-</div>
-{/volist}
-{$list->render()}
-{include file="base/footer" /}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <title>登录</title>
+    <style>
+        #main{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 	300px;
+            height: 300px;
+            margin: -150px -150px;
+            padding: 0 0;
+            background-color: #eee;
+        }
+        #title {
+            text-align:center;
+            height:50px;
+        }
+        .username_password{
+            text-align: center;
+            line-height: 2;
+        }
+        #submit{
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<form>
+    <div id="main">
+        <div id="title">
+            午安网管理中心1.2.0
+        </div>
+        <div class="username_password">
+            <span>邮箱：</span>
+            <span><input type="text" id="email" name="email" value=""/></span>
+            <br/>
+            <span>密码：</span>
+            <span><input type="password" id="password" name="password" value=""/></span>
+        </div>
+        <div id="submit">
+            <button type="button" >登录</button>
+        </div>
+    </div>
+    <script>
+        $("button").on("click", function() {
+            $.ajax({
+                type: "GET",
+                url: "login",
+                data: {
+                    email: $("#email").val(),
+                    password: $("#password").val()
+                },
+                success: function(data) {
+                    alert(data);
+                    window.location='get_user';
+                },
+                error: function() {
+                    alert("提交失败！");
+                }
+            });
+        })
+    </script>
+</form>
+</body>
+</html>
