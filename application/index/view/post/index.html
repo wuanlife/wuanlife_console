@@ -1,7 +1,7 @@
 {include file="base/header" title="查看用户列表" /}
 <h2>帖子管理&nbsp;&nbsp;<span>总页数：{$pnNum}</span></h2>
 <div>
-	<form method="get" id="searchform" action="http://localhost/wuanlife_console/public/index.php/index/post/get_post">
+	<form method="get" id="searchform" action="get_post">
 	    <fieldset class="search">
 	         <input type="text" name="pn" id="s" class="box inputText" placeholder="跳转">
 	          <button class="btn"> </button>
@@ -32,7 +32,7 @@
 {include file="base/footer" /}
 
 <script type="text/javascript">
-	var href="http://localhost/wuanlife_console/public/index.php/index/post/get_post";
+	var href="get_post";
 	var pre=document.getElementById("pre");
 	pre.onclick=function(){
 		var pageNow=window.location.search;
