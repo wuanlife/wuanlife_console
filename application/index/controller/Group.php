@@ -23,11 +23,32 @@ class Group extends Controller
 		$group = new GroupModel();
 		$pn = Request::instance()->get('pn');
 		$list = $group->get_group($pn);
+		echo "$pn";
+		$this->assign('all_num',$list['all_num']);
+		$this->assign('pn',$list['pn']);
+		$this->assign('page_count',$list['page_count']);
+		$this->assign('list',$list['group']);
+		return $this->fetch('get_group');
+	}
+
+	public function search_group()
+	{
+		$g = new GroupModel();
+		$gname = Request::instance()->get('gname');
+		$list = $g->search_group($gname);
+		//print_r($gname);
+		//返回星球名称对应的id、主人、是否私密
+		//
 		
 		$this->assign('all_num',$list['all_num']);
 		$this->assign('pn',$list['pn']);
 		$this->assign('page_count',$list['page_count']);
 		$this->assign('list',$list['group']);
 		return $this->fetch('get_group');
+	}
+
+	public function rename()
+	{
+
 	}
 }

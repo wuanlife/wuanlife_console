@@ -1,13 +1,24 @@
 {include file="base/header" title="查看星球列表" /}
 <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 <h2>星球管理</h2>
+<div>
+	<form method="get" id="searchform" action="search_group">
+	    <fieldset class="search">
+	         <input type="text" name="gname" id="s" class="box inputText" placeholder="输入星球名称">
+	          <button class="btn"> </button>
+	    </fieldset>
+	</form>
+</div>
 <h3><a href="?pn={$pn-1}">上一页</a> {$pn}/{$page_count} <a href="?pn={$pn+1}">下一页</a> </h3>
+
 <table>
     {volist name="list" id="group"}
     <tr>
-        <td>星球id：{$group.id}</td>
-        <td>名称：{$group.name}</td>
+        <td>星球id：{$group.gid}</td>
+        <td>名称：{$group.gname}</td>
+        <td>主人：{$group.uname}</td>
         <td>是否私密：{$group.private}</td>
+        <td><a href="http://www.wuanla.com/group/{$group.gid}">跳转到星球</a></td>
     {/volist}
 </table>
 
