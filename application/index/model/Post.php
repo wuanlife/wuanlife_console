@@ -4,6 +4,8 @@ use think\Model;
 use think\DB;
 
 class Post extends Model{
+
+
 	public function get_post($pn){
 		$page=5;
 		$start=($pn-1)*$page;

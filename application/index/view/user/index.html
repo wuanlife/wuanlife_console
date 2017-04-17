@@ -50,14 +50,14 @@
         $("button").on("click", function() {
             $.ajax({
                 type: "GET",
-                url: "login",
+                url: "../user/login",
                 data: {
                     email: $("#email").val(),
                     password: $("#password").val()
                 },
                 success: function(data) {
                     alert(data);
-                    window.location='get_user';
+                    window.location='../user/get_user';
                 },
                 error: function() {
                     alert("提交失败！");
