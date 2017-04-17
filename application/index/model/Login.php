@@ -12,12 +12,12 @@ use think\Model;
 
 class Login extends Model
 {
-    public function login($Email,$password){
-    	$admin= \think\Db::name('user_base')->where('Email','=',$Email)->find();
+    public function login($email,$password){
+    	$admin= \think\Db::name('user_base')->where('email','=',$email)->find();
     	if($admin){
     		if($admin['password']==md5($password)){
     			\think\Session::set('id',$admin['id']);
-    			\think\Session::set('Email',$admin['Email']);
+    			\think\Session::set('email',$admin['email']);
                 $detail = \think\Db::name('user_detail')->where('user_base_id','eq',$admin['id'])->find();
                 if($detail['authorization'] == '03'){
                     \think\Session::set('authorization',$detail['authorization']);

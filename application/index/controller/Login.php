@@ -17,7 +17,7 @@ class Login extends Controller
 
         if(request()->isPost()){
             $login=new Log;
-            $status=$login->login(input('Email'),input('password'));
+            $status=$login->login(input('email'),input('password'));
             if($status==1){
                 return $this->success('登录成功，正在跳转！','Index/Super/lst');
             }elseif($status==2){
