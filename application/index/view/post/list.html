@@ -56,38 +56,10 @@
                     <div class="list-page" style="width: 800px;"></div>
                 </div>
             </form>
-            <div>
-                <button id="pre">
-                    上一页
-                </button>
-                <button id="next">
-                    下一页
-                </button>
-            </div>
+            <div class="list-page" style="width: 800px;">{$list->render()}</div>
         </div>
     </div>
     <!--/main-->
 </div>
-<script type="text/javascript">
-    var href="get_post";
-    var pre=document.getElementById("pre");
-    pre.onclick=function(){
-        var pageNow=window.location.search;
-        var prePage=pageNow.replace(/[^0-9]/g,"");
-        prePage--;
-        if (prePage<=0) {
-            prePage=1;
-        }
-        window.location.href=href+"?pn="+prePage;
-    }
-
-    var next=document.getElementById("next");
-    next.onclick=function(){
-        var pageNow=window.location.search;
-        var nextPage=pageNow.replace(/[^0-9]/g,"");
-        nextPage++;
-        window.location.href=href+"?pn="+nextPage;
-    }
-</script>
 </body>
 </html>

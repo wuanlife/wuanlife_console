@@ -14,7 +14,7 @@ class Post extends Model{
 		->where('floor',1)
 		->order('create_time desc')
 		->limit($start,$page)
-		->select();
+		->paginate(10);
 		return $post;
 	}
 

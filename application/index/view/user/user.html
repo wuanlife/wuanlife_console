@@ -27,7 +27,7 @@
     <div class="main-wrap">
 
         <div class="crumb-wrap">
-            <div class="crumb-list"><i class="icon-font"></i><a href="/jscss/admin">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">帖子管理</span></div>
+            <div class="crumb-list"><i class="icon-font"></i><a href="/jscss/admin">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">用户管理</span></div>
         </div>
         <div class="result-wrap">
             <form name="myform" id="myform" method="post">
@@ -46,7 +46,7 @@
                             <td>{$vo.user_name}</td>
                             <td>{$vo.user_email}</td>
                             <td>{$vo.num}</td>
-                            <td><button type="button" id="user_id" value="{$vo.user_id}">重置密码</button></td>
+                            <td><button type="button" class="user_id" value="{$vo.user_id}">重置密码</button></td>
                         </tr>
                         {/volist}
                     </table>
@@ -54,38 +54,15 @@
                 </div>
             </form>
             <div>
-                <button id="pre">
-                    上一页
-                </button>
-                <button id="next">
-                    下一页
-                </button>
+                <h3><a href="?pn={$pn-1}">上一页</a> {$pn}/{$page_count} <a href="?pn={$pn+1}">下一页</a> </h3>
             </div>
         </div>
     </div>
     <!--/main-->
 </div>
 <script type="text/javascript">
-    var href="get_post";
-    var pre=document.getElementById("pre");
-    pre.onclick=function(){
-        var pageNow=window.location.search;
-        var prePage=pageNow.replace(/[^0-9]/g,"");
-        prePage--;
-        if (prePage<=0) {
-            prePage=1;
-        }
-        window.location.href=href+"?pn="+prePage;
-    }
 
-    var next=document.getElementById("next");
-    next.onclick=function(){
-        var pageNow=window.location.search;
-        var nextPage=pageNow.replace(/[^0-9]/g,"");
-        nextPage++;
-        window.location.href=href+"?pn="+nextPage;
-    }
-    $("button").on("click", function() {
+    $("button.user_id").on("click", function() {
         if(window.confirm('你确定要重置密码吗？')){
             $.ajax({
                 type: "GET",
