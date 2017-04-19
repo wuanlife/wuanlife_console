@@ -14,7 +14,7 @@ class Super extends Base
     public function lst()
     {
         // 联合查询，获取管理员列表
-    	$adminres= \think\Db::name('user_base')->alias('a')->join('user_detail c','c.user_base_id = a.id','LEFT')->field('a.id,a.nickname,a.Email,a.regtime,c.authorization')->where('authorization','eq',02)->paginate(10);
+    	$adminres= \think\Db::name('user_base')->alias('a')->join('user_detail c','c.user_base_id = a.id','LEFT')->field('a.id,a.nickname,a.email,a.regtime,c.authorization')->where('authorization','eq',02)->paginate(10);
         // 结果数据传送到模板
     	$this->assign('adminres',$adminres);
         return $this->fetch();
