@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理</title>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/admin/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/admin/css/main.css"/>
+    <script type="text/javascript" src="__PUBLIC__/static/admin/js/libs/modernizr.min.js"></script>
+</head>
+<style type="text/css">
+    ul.pagination  li{
+        float: left;
+    }
+
+    div.list-page{
+        width: 400px;
+        margin: 0 auto;
+        text-align: center;
+    }
+</style>
+<body>
+{include file="Public/top" /}
+<div class="container clearfix">
+    {include file="Public/left" /}
+    <!--/sidebar-->
+    <div class="main-wrap">
+
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font"></i><a href="/jscss/admin">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">帖子管理</span></div>
+        </div>
+        <div class="result-wrap">
+            <form name="myform" id="myform" method="post">
+                <div class="result-content">
+                    <table class="result-tab" width="100%">
+                        <tr>
+                            <th>帖子ID</th>
+                            <th>帖子标题</th>
+                            <th>帖子创建时间</th>
+                            <th>帖子是否为精华帖</th>
+                            <th>帖子是否置顶</th>
+                            <th>帖子是否被删除</th>
+                            <th>帖子是否被锁定</th>
+                        </tr>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.title}</td>
+                            <td>{$vo.create_time}</td>
+                            <td>{$vo.digest}</td>
+                            <td>{$vo.sticky}</td>
+                            <td>{$vo.delete}</td>
+                            <td>{$vo.lock}</td>
+                        </tr>
+                        {/volist}
+                    </table>
+                    <div class="list-page" style="width: 800px;"></div>
+                </div>
+            </form>
+            <div>
+                <button id="pre">
+                    上一页
+                </button>
+                <button id="next">
+                    下一页
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--/main-->
+</div>
+<script type="text/javascript">
+    var href="get_post";
+    var pre=document.getElementById("pre");
+    pre.onclick=function(){
+        var pageNow=window.location.search;
+        var prePage=pageNow.replace(/[^0-9]/g,"");
+        prePage--;
+        if (prePage<=0) {
+            prePage=1;
+        }
+        window.location.href=href+"?pn="+prePage;
+    }
+
+    var next=document.getElementById("next");
+    next.onclick=function(){
+        var pageNow=window.location.search;
+        var nextPage=pageNow.replace(/[^0-9]/g,"");
+        nextPage++;
+        window.location.href=href+"?pn="+nextPage;
+    }
+</script>
+</body>
+</html>
