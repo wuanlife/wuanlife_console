@@ -12,10 +12,10 @@ class Group extends Controller
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        // if(empty($_GET)&&empty(Session::get()))
-        // {
-        //     echo $this->fetch('index');exit;
-        // }
+		if(empty($_GET)&&empty(Session::get()))
+		{
+			echo $this->fetch('/user/index');exit;
+		}
     }
 
 	 public function get_group()

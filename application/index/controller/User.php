@@ -12,10 +12,10 @@ class User extends Controller
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        // if(empty($_GET)&&empty(Session::get()))
-        // {
-        //     echo $this->fetch('index');exit;
-        // }
+		if(empty($_GET)&&empty(Session::get()))
+		{
+			echo $this->fetch('/user/index');exit;
+		}
     }
 
 
@@ -53,7 +53,7 @@ class User extends Controller
 		$user=new UserModel();
 		$pn = Request::instance()->get('pn');
 		$list = $user->get_user($pn);
-		print_r($list);
+		//print_r($list);
 		$this->assign('pn',$list['pn']);
 		$this->assign('data',$list['all_num']);
 		$this->assign('page_count',$list['page_count']);
