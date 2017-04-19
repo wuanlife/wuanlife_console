@@ -28,7 +28,6 @@ class Post extends Controller
 	    $pnNum=$post->pn_num();
 	    $this->assign('list',$list);
 	    $this->assign('pnNum',$pnNum);
-	    var_dump($list);
 	    return $this->fetch('list');
 	}
 
