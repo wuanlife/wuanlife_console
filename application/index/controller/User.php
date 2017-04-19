@@ -58,7 +58,7 @@ class User extends Controller
 		$this->assign('data',$list['all_num']);
 		$this->assign('page_count',$list['page_count']);
 		$this->assign('list',$list['user']);
-		return $this->fetch('get_user');
+		return $this->fetch('user');
 	}
 
 	public function re_psw()

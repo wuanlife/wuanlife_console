@@ -25,7 +25,8 @@ class Post extends Controller
 	    $pnNum=$post->pn_num();
 	    $this->assign('list',$list);
 	    $this->assign('pnNum',$pnNum);
-	    return $this->fetch('index');
+	    var_dump($list);
+	    return $this->fetch('list');
 	}
 
 	public function search_post($p_title=null){
