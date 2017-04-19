@@ -31,9 +31,16 @@ class Post extends Controller
 	    return $this->fetch('list');
 	}
 
-	public function search_post($p_title=null){
-		$post=new PostModel();
-		$list=$post->search_post($p_title);
+	public function search_post()
+	{
+		$post = new PostModel();
+		$pname = Request::instance()->get('pname');
+		$list = $post->search_post($pname);
+		//print_r($gname);
+		//返回星球名称对应的id、主人、是否私密
+
+		$this->assign('list',$list);
+		return $this->fetch('list');
 	}
 
 

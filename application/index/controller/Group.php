@@ -31,7 +31,7 @@ class Group extends Controller
 		$this->assign('pn',$list['pn']);
 		$this->assign('page_count',$list['page_count']);
 		$this->assign('list',$list['group']);
-		return $this->fetch('get_group');
+		return $this->fetch('group');
 	}
 
 	public function search_group()
@@ -42,12 +42,11 @@ class Group extends Controller
 		//print_r($gname);
 		//返回星球名称对应的id、主人、是否私密
 		//
-		
 		$this->assign('all_num',$list['all_num']);
 		$this->assign('pn',$list['pn']);
 		$this->assign('page_count',$list['page_count']);
 		$this->assign('list',$list['group']);
-		return $this->fetch('get_group');
+		return $this->fetch('group');
 	}
 
 	public function rename()

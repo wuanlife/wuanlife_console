@@ -7,14 +7,11 @@ class Post extends Model{
 
 
 	public function get_post($pn){
-		$page=5;
-		$start=($pn-1)*$page;
 		$post=Db::table('post_base')
 		->join('post_detail','post_base.id=post_detail.post_base_id')
 		->where('floor',1)
 		->order('create_time desc')
-		->limit($start,$page)
-		->select();
+		->paginate(10);
 		return $post;
 	}
 
@@ -25,6 +22,15 @@ class Post extends Model{
 		$pn_num=ceil(count($post)/$page);
 		return $pn_num;
 	}
+    public function search_post($pname){
+		$post=Db::table('post_base')
+		->join('post_detail','post_base.id=post_detail.post_base_id')
+		->where('floor',1)
+		->where('title',"$pname")
+		->order('create_time desc')
+		->paginate(10);
+        return $post;
 
+    }
 
 }
