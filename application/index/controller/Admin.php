@@ -27,7 +27,7 @@ class Admin extends Base
     		];
     		$validate = \think\Loader::validate('Admin');
     		if($validate->check($data)){
-	    		$db= \think\Db::name('admin')->insert($data);
+	    		$db= \think\Db::name('user_base')->insert($data);
 	    		if($db){
 	    			return $this->success('添加管理员成功！','lst');
 	    		}else{
@@ -43,8 +43,8 @@ class Admin extends Base
 
     public function edit(){
         $id=input('id');
-    	if(request()->isPost()){
-            $userinfo=\think\Db::name('admin')->find($id);
+    	if(request()->isGet()){
+            $userinfo=\think\Db::name('user_base')->find($id);
             $password=$userinfo['password'];
     		$data=[
     			'id'=>input('id'),
@@ -53,7 +53,7 @@ class Admin extends Base
     		];
     		$validate = \think\Loader::validate('Admin');
     		if($validate->scene('edit')->check($data)){
-    			if($db=\think\Db::name('admin')->update($data)){
+    			if($db=\think\Db::name('user_base')->update($data)){
     			return $this->success('修改管理员成功！','lst');
 	    		}else{
 	    			return $this->error('修改管理员失败！');
@@ -61,13 +61,15 @@ class Admin extends Base
     		}else{
     			return $this->error($validate->getError());
     		}
-    		
+    		var_dump($validate);
 
-    		return;
+    		return 0;
     	}
-    	$admins=db('admin')->find($id);
-    	$this->assign('admins',$admins);
-    	return $this->fetch();
+        var_dump(request()->isGet());
+    	$admins=db('user_base')->find($id);
+		//print_r($admins);
+//    	$this->assign('admins',$admins);
+//    	return $this->fetch('lst');
 
     }
 

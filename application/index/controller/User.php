@@ -12,9 +12,12 @@ class User extends Controller
     public function __construct(Request $request)
     {
         parent::__construct($request);
-		if(empty($_GET)&&empty(Session::get()))
+		if(empty(Session::get()))
 		{
-			echo $this->fetch('/user/index');exit;
+            if($request->controller()!='user'&&$request->action()!='index'&&$request->action()!='login')
+            {
+                $this->error('请先登录系统！',url('User/index'));
+            }
 		}
     }
 

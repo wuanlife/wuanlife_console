@@ -1,7 +1,8 @@
 <?php
 namespace app\index\controller;
 
-
+use think\Request;
+use think\Session;
 /*
  *
  *  此表为管理员添加操作代码    陈超  2017-4-16
@@ -10,6 +11,17 @@ namespace app\index\controller;
 
 class Super extends Base
 {
+	public function __construct(Request $request)
+	{
+		parent::__construct($request);
+		if(empty(Session::get()))
+		{
+			if($request->controller()!='user'&&$request->action()!='index'&&$request->action()!='login')
+			{
+				$this->error('请先登录系统！',url('User/index'));
+			}
+		}
+	}
     // 管理员默认列表
     public function lst()
     {

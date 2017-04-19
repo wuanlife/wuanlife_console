@@ -56,8 +56,13 @@
                     password: $("#password").val()
                 },
                 success: function(data) {
-                    alert(data);
-                    window.location='../user/get_user';
+                    if(data=='登录成功')
+                    {
+                        window.location='../user/get_user';
+                    }else
+                    {
+                        alert(data);
+                    }
                 },
                 error: function() {
                     alert("提交失败！");

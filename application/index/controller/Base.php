@@ -15,7 +15,7 @@ class Base extends Controller
     public function _initialize()
     {
         if(!session('id')){
-             $this->error('请先登录系统！',url('Login/index'));
+             $this->error('请先登录系统！',url('User/index'));
         }
     }
     
