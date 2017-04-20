@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use app\index\model\User as UserModel;
 use think\Controller;
+use think\Db;
 use think\Request;
 use think\Session;
 
@@ -55,21 +56,21 @@ class User extends Controller
 	{
 		$user=new UserModel();
 		$pn = Request::instance()->get('pn');
-		$list = $user->get_user($pn);
-		//print_r($list);
-		$this->assign('pn',$list['pn']);
-		$this->assign('data',$list['all_num']);
-		$this->assign('page_count',$list['page_count']);
-		$this->assign('list',$list['user']);
+		$list = $user->get_user();
+		$this->assign('list',$list);
 		return $this->fetch('user');
 	}
 
 	public function re_psw()
 	{
 		$data['user_id'] = Request::instance()->get('user_id'); // 获取某个get变量
+        if(empty($data['user_id'])){
+            echo '重置密码失败';
+        }
 		$data['password'] = md5('123456');
 		$user_model = new UserModel();
 		$user_model->re_psw($data);
-        echo '重置密码为123456成功';
+        echo $data['user_id'];
+        //echo '重置密码为123456成功';
 	}
 }

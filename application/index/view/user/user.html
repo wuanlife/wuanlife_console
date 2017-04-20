@@ -27,7 +27,7 @@
     <div class="main-wrap">
 
         <div class="crumb-wrap">
-            <div class="crumb-list"><i class="icon-font"></i><a href="/jscss/admin">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">用户管理</span></div>
+            <div class="crumb-list"><i class="icon-font"></i><a href="/jscss/admin">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">用户管理</span></div>
         </div>
         <div class="result-wrap">
             <form name="myform" id="myform" method="post">
@@ -46,16 +46,14 @@
                             <td>{$vo.user_name}</td>
                             <td>{$vo.user_email}</td>
                             <td>{$vo.num}</td>
-                            <td><button type="button" class="user_id" value="{$vo.user_id}">重置密码</button></td>
+                            <td><button type="button" class="user_id" value="{$vo.user_id}">重置密码{$vo.user_id}</button></td>
                         </tr>
                         {/volist}
                     </table>
                     <div class="list-page" style="width: 800px;"></div>
                 </div>
             </form>
-            <div>
-                <h3><a href="?pn={$pn-1}">上一页</a> {$pn}/{$page_count} <a href="?pn={$pn+1}">下一页</a> </h3>
-            </div>
+            <div class="list-page" style="width: 800px;">{$list->render()}</div>
         </div>
     </div>
     <!--/main-->

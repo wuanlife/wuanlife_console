@@ -25,9 +25,9 @@ class Post extends Controller
 		}
 		$post=new PostModel();
 	    $list = $post->get_post($pn);
-	    $pnNum=$post->pn_num();
+	    //$pnNum=$post->pn_num();
 	    $this->assign('list',$list);
-	    $this->assign('pnNum',$pnNum);
+	    //$this->assign('pnNum',$pnNum);
 	    return $this->fetch('list');
 	}
 
