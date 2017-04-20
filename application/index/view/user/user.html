@@ -27,7 +27,7 @@
     <div class="main-wrap">
 
         <div class="crumb-wrap">
-            <div class="crumb-list"><i class="icon-font"></i><a href="/jscss/admin">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">用户管理</span></div>
+            <div class="crumb-list"><span class="crumb-name">用户管理</span></div>
         </div>
         <div class="result-wrap">
             <form name="myform" id="myform" method="post">
@@ -46,7 +46,7 @@
                             <td>{$vo.user_name}</td>
                             <td>{$vo.user_email}</td>
                             <td>{$vo.num}</td>
-                            <td><button type="button" class="user_id" value="{$vo.user_id}">重置密码{$vo.user_id}</button></td>
+                            <td><a href="#" class="user_id" value="{$vo.user_id}">重置密码</a></td>
                         </tr>
                         {/volist}
                     </table>
@@ -60,13 +60,13 @@
 </div>
 <script type="text/javascript">
 
-    $("button.user_id").on("click", function() {
+    $("a.user_id").on("click", function() {
         if(window.confirm('你确定要重置密码吗？')){
             $.ajax({
                 type: "GET",
                 url: "re_psw",
                 data: {
-                    user_id: $("#user_id").val(),
+                    user_id: $(this).attr('value')
                 },
                 success: function(data) {
                     alert(data);

@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use think\Controller;
 use think\Request;
 use think\Session;
 /*
@@ -9,7 +10,7 @@ use think\Session;
  *
  */
 
-class Super extends Base
+class Super extends Controller
 {
 	public function __construct(Request $request)
 	{
@@ -20,6 +21,10 @@ class Super extends Base
 			{
 				$this->error('请先登录系统！',url('User/index'));
 			}
+		}
+		if(Session::get('auth')!='03')
+		{
+			$this->error('您没有权限访问！');
 		}
 	}
     // 管理员默认列表

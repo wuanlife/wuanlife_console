@@ -40,7 +40,8 @@ class User extends Controller
             $rs = $re[0];
             if(in_array($rs['auth'],['02','03'])) {
 				Session::set('auth', $rs['auth']);
-				Session::set('id', $rs['id']);
+				//Session::set('id', $rs['id']);
+				Session::set('nickname', $rs['nickname']);
                 echo '登录成功';
 			}else{
                 echo '您不是管理员';
@@ -66,11 +67,12 @@ class User extends Controller
 		$data['user_id'] = Request::instance()->get('user_id'); // 获取某个get变量
         if(empty($data['user_id'])){
             echo '重置密码失败';
-        }
-		$data['password'] = md5('123456');
-		$user_model = new UserModel();
-		$user_model->re_psw($data);
-        echo $data['user_id'];
-        //echo '重置密码为123456成功';
+        }else{
+			$data['password'] = md5('123456');
+			$user_model = new UserModel();
+			$user_model->re_psw($data);
+			echo '重置密码为123456成功';
+		}
+
 	}
 }

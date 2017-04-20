@@ -27,7 +27,7 @@ class User extends Model
 
     public function login($data)
     {
-        $sql = 'SELECT authorization AS auth,id '
+        $sql = 'SELECT authorization AS auth,id,nickname '
             .'FROM user_detail '
             .'JOIN user_base ON user_base.id = user_detail.user_base_id '
             .'WHERE email = :email '

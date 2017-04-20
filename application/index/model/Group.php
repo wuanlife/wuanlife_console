@@ -8,7 +8,7 @@ class Group extends Model
 	public function get_group($pn){
 
         $all_num = Db::table('group_base')->count();
-        $page_num     = 15;                                       //每页条数
+        $page_num     = 10;                                       //每页条数
         $pageCount =ceil($all_num/$page_num);                //总页数
         if ($pageCount == 0){
             $pageCount =1;
