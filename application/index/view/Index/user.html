@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户详情</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css"/>
+</head>
+<body>
+        <table class="result-tab" width="100%">
+            <tr>
+                <th>用户ID</th>
+                <th>昵称</th>
+                <th>邮箱</th>
+                <th>当月发帖数</th>
+            </tr>
+            {volist name="list" id="vo"}
+            <tr>
+                <td>{$vo.user_id}</td>
+                <td>{$vo.user_name}</td>
+                <td>{$vo.user_email}</td>
+                <td>{$vo.num}</td>
+            </tr>
+            {/volist}
+        </table>
+        <div align="center">{$list->render()}</div>
+</body>
+</html>
