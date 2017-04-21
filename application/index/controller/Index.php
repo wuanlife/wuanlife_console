@@ -23,7 +23,7 @@ class Index extends Controller
             ->bind(['start'=>$start,'end'=>$end])
             ->group('user_base.id')
             ->order('num DESC,id DESC')
-            ->paginate(3);
+            ->paginate(30);
         return $rs;
     }
 
