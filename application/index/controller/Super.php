@@ -47,8 +47,12 @@ class Super extends Controller
     			'nickname'=>input('nickname'),
     		];
             // 查询昵称是否存在
-            $user = \think\Db::name('user_base')->where('nickname','=',$data['nickname'])->find();
+            $user = \think\Db::name('user_base')->field('id')->where('nickname','=',$data['nickname'])->find();
             // 如果存在执行添加
+			if($user['id']==1)
+            {
+                return $this->error('添加管理员失败，该用户已经是管理员！');
+            }
     		if($user){
                 // 获取添加管理员结果
 	    		$db= \think\Db::name('user_detail')->where('user_base_id','eq',$user['id'])->update(['authorization'=>'02']);
