@@ -79,7 +79,9 @@ fieldset.search:hover {
                         <tr>
                             <th>星球id</th>
                             <th>名称</th>
+                            <th>更改名称</th>
                             <th>主人</th>
+                            <th>更改主人</th>
                             <th>是否私密</th>
                             <th>跳转</th>
                         </tr>
@@ -87,7 +89,9 @@ fieldset.search:hover {
                         <tr>
                             <td>{$group.gid}</td>
                             <td>{$group.gname}</td>
+                            <td><a href="http://127.0.0.1/wuanlife_console/public/index.php/group/change_gname1?new_gname={$group.gname}">更改名称</a></td>
                             <td>{$group.uname}</td>
+                            <td><a href="http://127.0.0.1/wuanlife_console/public/index.php/group/change_gname2?uname={$group.uname}">更改主人</a></td>
                             <td>{$group.private}</td>
                             <td><a href="http://www.wuanla.com/group/{$group.gid}">跳转到星球</a></td>
                         </tr>

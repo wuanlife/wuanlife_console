@@ -45,6 +45,10 @@ class Group extends Model
             'page_count' => 1
         ];
         return $rs;
-
+    }
+    public function update_gname($gid,$new_gname)
+    {
+        $sql = "update group_base set name = '{$new_gname}' where id = {$gid}";
+        Db::query($sql);
     }
 }
