@@ -1,0 +1,17 @@
+
+<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<h2>星球管理</h2>
+
+<div>
+	<form method="get" id="searchform" action="change_uname2">
+	<p>星球名称：<?php  echo ($list['group'][0]['gname']);?></p>
+	    <p>原星球主人为：<?php  echo ($list['group'][0]['uname']);?></p>
+        <p>更改为：</p>
+        <fieldset class="search">
+	         <input type="text" name="new_uname" id="s" class="box inputText" placeholder="输入新主人名">
+	         <input type="hidden" name="gid" value="<?php echo ($list['group'][0]['gid']);?>">
+	         <input type="hidden" name="old_uid" value="<?php echo ($list['group'][0]['uid']);?>">
+	          <button class="btn">确定</button>
+	    </fieldset>
+	</form>
+</div> 

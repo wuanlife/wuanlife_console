@@ -1,0 +1,15 @@
+
+<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<h2>星球管理</h2>
+
+<div>
+	<form method="get" id="searchform" action="change_gname2">
+	    <p>原星球名为：<?php  echo ($list['group'][0]['gname']);?></p>
+        <p>更改为：</p>
+        <fieldset class="search">
+	         <input type="text" name="new_gname" id="s" class="box inputText" placeholder="输入星球名称">
+	         <input type="hidden" name="gid" value="<?php echo ($list['group'][0]['gid']);?>">
+	          <button class="btn">确定</button>
+	    </fieldset>
+	</form>
+</div> 

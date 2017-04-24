@@ -55,7 +55,7 @@ class Group extends Controller
 	*/
 	public function change_gname1()
 	{
-		echo "112233";
+		//echo "112233";
 		$g = new GroupModel();
 		$gname = Request::instance()->get('new_gname');
 		$list = $g->search_group($gname);
@@ -91,5 +91,61 @@ class Group extends Controller
 		 	echo "更改成功";
 		 	echo "<a href = 'http://127.0.0.1/wuanlife_console/public/index.php/group/get_group'>back</a>";
 		 }
+	}
+
+
+/*
+*
+*更改星球主人change_uname1跳转页面change_gname2更改
+**/
+	public function change_uname1()
+	{
+		//echo "112233";
+		$g = new GroupModel();
+		$gname = Request::instance()->get('gname');
+		//echo "$gname";
+		$list = $g->search_group($gname);
+		$this->assign('list',$list);
+
+		 return $this->fetch('change_uname');
+	}
+
+	public function change_uname2()
+	{
+		//用星球名查找。如果存在 显示错误，假如不存在，更新星球名
+		$g = new GroupModel();
+
+		$new_uname = Request::instance()->get('new_uname'); //新主人名
+		$gid = Request::instance()->get('gid');				//星球id
+		$old_uid = Request::instance()->get('old_uid');		//旧主人id
+		//echo "新主人名 : $new_uname"."<br />"."星球id : $gid"."<br />"."旧主人id : $old_uid"."<br />";
+
+		//$urs = $g->search_alluser_info($gid);
+		$urs = $g->search_user_info($gid,$new_uname);
+		if(empty($urs[0]['uid']))
+		{
+			echo "输入不正确";
+		}
+		else
+		{
+			$new_uid = $urs[0]['uid'];
+		//echo "$new_uid";
+			$g->update_user_authorization($gid,$new_uid,$old_uid);
+			echo "更改成功";
+			echo "<a href = 'http://127.0.0.1/wuanlife_console/public/index.php/group/get_group'>back</a>";
+		}
+		// if (isset($rs['glist'][0])) 
+		// {
+		// 	//
+		// }
+		// else
+		// {
+
+		// }
+		//$gid =1;
+		// echo "$new_gname";
+		// echo "$gid";
+		//$list = $g->search_group_info($gid);
+		//print_r($list);
 	}
 }
