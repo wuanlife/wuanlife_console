@@ -238,7 +238,7 @@ return [
     ],
     //输出替换
     'view_replace_str'=>[
-    '__PUBLIC__'=>'../../../public',
+    '__PUBLIC__'=>'/wuanlife_console/public',
     '__ROOT__' => '/',
     ],
 ];
