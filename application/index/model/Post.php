@@ -26,9 +26,11 @@ class Post extends Model{
 		$post=Db::table('post_base')
 		->join('post_detail','post_base.id=post_detail.post_base_id')
 		->where('floor',1)
-		->where('title',"$pname")
+		->where('title','like',"%$pname%")
 		->order('create_time desc')
-		->paginate(10);
+		->paginate(10,false,[
+			'query' => array('pname'=>$pname),
+		]);
         return $post;
 
     }

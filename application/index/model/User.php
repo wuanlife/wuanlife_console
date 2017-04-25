@@ -8,7 +8,7 @@ class User extends Model
     public function get_user(){
         $start = date('Y-m-').'01 00:00:00';
         $end = date('Y-m-t').' 23:59:59';
-        $rs= \think\Db::name('user_base')
+        $rs= Db::name('user_base')
             ->join('post_detail','user_base.id = post_detail.user_base_id AND post_detail.create_time >= :start AND post_detail.create_time <= :end AND post_detail.floor = 1','LEFT')
             ->field('id AS user_id,nickname AS user_name,email AS user_email,COUNT(post_base_id) AS num')
             ->bind(['start'=>$start,'end'=>$end])

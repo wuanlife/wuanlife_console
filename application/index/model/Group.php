@@ -1,49 +1,55 @@
 <?php
 namespace app\index\model;
+use think\db\Query;
 use think\Model;
 use think\DB;
 
 class Group extends Model
 {
-	public function get_group($pn){
-
-        $all_num = Db::table('group_base')->count();
-        $page_num     = 10;                                       //每页条数
-        $pageCount =ceil($all_num/$page_num);                //总页数
-        if ($pageCount == 0){
-            $pageCount =1;
-        }
-        if($pn > $pageCount){
-            $pn = $pageCount;
-        }
-        $pn         =empty($pn)?1:$pn;                    //当前页数
-        $pn         =(int)$pn;                              //安全强制转换
-        $limit_st     =($pn-1)*$page_num;                     //起始数
-
-        $sql = 'select gb.id gid,gb.name gname,gb.private private,ub.id uid,ub.nickname uname from group_base gb,group_detail gd,user_base ub where gb.id=gd.group_base_id and gd.user_base_id=ub.id and gd.authorization=01 '
-         .'LIMIT :limit_st,:page_num';
-        $parms = ['limit_st'=>$limit_st,'page_num'=>$page_num];
-        
-        $rs = [
-            'all_num' => $all_num,
-            'pn'      => $pn,
-            'group'    => Db::query($sql,$parms),
-            'page_count' => $pageCount
-        ];
+	public function get_group(){
+        $rs = Db::name('group_base gb')
+            ->join('group_detail gd','gb.id = gd.group_base_id AND gd.authorization = 01')
+            ->join('user_base ub','gd.user_base_id = user_base.id')
+            ->field('gb.id AS gid,gb.name AS gname,gb.private,ub.id AS uid,ub.nickname AS uname')
+            ->paginate(10);
+        return $rs;
+    }
+    public function get_group_member($gid)
+    {
+//        Db::listen(function($sql, $time, $explain){
+//            // 记录SQL
+//            echo $sql. ' ['.$time.'s]';
+//            // 查看性能分析结果
+//            dump($explain);
+//        });
+        $rs = Db::name('user_base ub')
+            ->join('group_detail gd','gd.group_base_id = :gid AND gd.user_base_id = ub.id')
+            ->bind(['gid'=>"$gid"])
+            ->field('ub.id uid,ub.nickname uname,gd.authorization')
+            ->paginate(10);
+        return $rs;
+    }
+    public function search_group_full($s)
+    {
+        $rs = Db::name('group_base gb')
+            ->join('group_detail gd','gb.id = gd.group_base_id AND gd.authorization = 01')
+            ->join('user_base ub','gd.user_base_id = ub.id AND gb.name LIKE :gname')
+            ->field('gb.id AS gid,gb.name AS gname,gb.private,ub.id AS uid,ub.nickname AS uname')
+            ->bind(['gname'=>"$s"])
+            ->paginate(10);
         return $rs;
     }
     public function search_group($s)
     {
-    	//echo "Model is run <br />";
-        
-    	$sql ="SELECT gb.id gid,gb.name gname,gb.private private,ub.id uid,ub.nickname uname from group_base gb,group_detail gd,user_base ub where gb.id=gd.group_base_id and gd.user_base_id=ub.id and gd.authorization=01 and gb.name = '{$s}'";
-    	
-    	$rs = [
-            'all_num' => 1,
-            'pn'      => 1,
-            'group'    => Db::query($sql),
-            'page_count' => 1
-        ];
+        $rs = Db::name('group_base gb')
+            ->join('group_detail gd','gb.id = gd.group_base_id AND gd.authorization = 01')
+            ->join('user_base ub','gd.user_base_id = ub.id AND gb.name LIKE :gname')
+            ->field('gb.id AS gid,gb.name AS gname,gb.private,ub.id AS uid,ub.nickname AS uname')
+            ->bind(['gname'=>"%$s%"])
+            ->paginate(10,false,[
+                'query' => array('gname'=>$s),
+
+            ]);
         return $rs;
     }
     public function update_gname($gid,$new_gname)
@@ -87,6 +93,32 @@ class Group extends Model
         Db::query($sql2);
         Db::query($sql1);
 
+    }
+    public function test()
+    {
+//        $rs = \think\Db::view('group_base','id AS gid,name AS gname,private')
+//            ->view('group_detail','authorization','group_base.id = group_detail.group_base_id AND group_detail.authorization = 01')
+//            ->view('user_base','id AS uid,nickname AS uname','group_detail.user_base_id = user_base.id')
+//            //->select();//
+//            ->paginate(10);
+//
+//        Db::listen(function($sql,$time,$explain){
+//            // 记录SQL
+//            echo $sql. ' ['.$time.'s]';
+//            // 查看性能分析结果
+//            dump($explain);
+//        });
+//        $rs = Db::name('group_base')
+//            ->join('group_detail','group_base.id = group_detail.group_base_id AND group_detail.authorization = 01')
+//            ->join('user_base','group_detail.user_base_id = user_base.id')
+//            ->field('group_base.id AS gid,group_base.name AS gname,private,user_base.id AS uid,user_base.nickname AS uname')
+//            ->paginate(10);
+        $rs = Db::name('group_base gb')
+            ->join('group_detail gd','gb.id = gd.group_base_id AND gd.authorization = 01')
+            ->join('user_base ub','gd.user_base_id = user_base.id')
+            ->field('gb.id AS gid,gb.name AS gname,gb.private,ub.id AS uid,ub.nickname AS uname')
+            ->paginate(10);
+        return $rs;
     }
 
 }

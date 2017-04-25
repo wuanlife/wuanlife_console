@@ -89,18 +89,17 @@ fieldset.search:hover {
                         <tr>
                             <td>{$group.gid}</td>
                             <td>{$group.gname}</td>
-                            <td><a href="http://127.0.0.1/wuanlife_console/public/index.php/group/change_gname1?new_gname={$group.gname}">更改名称</a></td>
+                            <td><a href="change_gname1?new_gname={$group.gname}&pn={$page}">更改名称</a></td>
                             <td>{$group.uname}</td>
-                            <td><a href="http://127.0.0.1/wuanlife_console/public/index.php/group/change_uname1?gname={$group.gname}">更改主人</a></td>
+                            <td><a href="change_uname1?gname={$group.gname}&pn={$page}">更改主人</a></td>
                             <td>{$group.private}</td>
                             <td><a href="http://www.wuanla.com/group/{$group.gid}">跳转到星球</a></td>
                         </tr>
                         {/volist}
                     </table>
-                    <div class="list-page" style="width: 800px;"></div>
                 </div>
             </form>
-            <h3><a href="?pn={$pn-1}">上一页</a> {$pn}/{$page_count} <a href="?pn={$pn+1}">下一页</a> </h3>
+            <div class="list-page" style="width: 800px;">{$list->render()}</div>
         </div>
     </div>
     <!--/main-->
