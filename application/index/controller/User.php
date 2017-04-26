@@ -10,16 +10,21 @@ use think\Session;
 class User extends Controller
 {
     // 获取用户数据列表并输出
+    /**
+     * User constructor.
+     * @param Request $request
+     */
     public function __construct(Request $request)
     {
         parent::__construct($request);
-		 if(empty(Session::get()))
-		 {
-             if($request->controller()!='user'&&$request->action()!='index'&&$request->action()!='login')
-             {
-                 $this->error('请先登录系统！',url('User/index'));
-             }
-		 }
+        $value = Session::get();
+        if(empty($value))
+        {
+            if($request->controller()!='user'&&$request->action()!='index'&&$request->action()!='login')
+            {
+                $this->error('请先登录系统！',url('User/index'));
+            }
+        }
     }
 
 

@@ -15,7 +15,8 @@ class Super extends Controller
 	public function __construct(Request $request)
 	{
 		parent::__construct($request);
-		if(empty(Session::get()))
+		$value = Session::get();
+		if(empty($value))
 		{
 			if($request->controller()!='user'&&$request->action()!='index'&&$request->action()!='login')
 			{
@@ -51,20 +52,19 @@ class Super extends Controller
             // 如果存在执行添加
 			if($user['id']==1)
             {
-                return $this->error('添加管理员失败，该用户已经是管理员！');
+                $this->error('添加管理员失败，该用户已经是管理员！');
             }
     		if($user){
                 // 获取添加管理员结果
 	    		$db= \think\Db::name('user_detail')->where('user_base_id','eq',$user['id'])->update(['authorization'=>'02']);
 	    		if($db){
-	    			return $this->success('添加管理员成功！','lst');
+	    			$this->success('添加管理员成功！','lst');
 	    		}else{
-	    			return $this->error('添加管理员失败，该用户已经是管理员！');
+	    			$this->error('添加管理员失败，该用户已经是管理员！');
 	    		}
     		}else{
-    			return $this->error('该会员昵称不存在！');
+    			$this->error('该会员昵称不存在！');
     		}
-    		return;
     	}
         return $this->fetch();
     }
@@ -79,9 +79,9 @@ class Super extends Controller
             ];
             // 如果执行成功，返回操作结果
         	if($db=\think\Db::name('user_detail')->update($data)){
-        		return $this->success('辞退管理员成功！','lst');
+        		$this->success('辞退管理员成功！','lst');
         	}else{
-        		return $this->error('辞退管理员失败！');
+        		$this->error('辞退管理员失败！');
         	}
         }
     }

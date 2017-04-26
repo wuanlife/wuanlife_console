@@ -8,7 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
+if (!defined('__PUBLIC__')) {
+    $_public = rtrim(dirname(rtrim($_SERVER['SCRIPT_NAME'], '/')), '/');
+    define('__PUBLIC__', (('/' == $_public || '\\' == $_public) ? '' : $_public));
+}
 return [
     // +----------------------------------------------------------------------
     // | 应用设置
@@ -17,7 +20,7 @@ return [
     // 应用命名空间
     'app_namespace'          => 'app',
     // 应用调试模式
-    'app_debug'              => true,
+    'app_debug'              => TRUE,
     // 应用Trace
     'app_trace'              => false,
     // 应用模式状态
@@ -154,7 +157,7 @@ return [
     // 错误显示信息,非调试模式有效
     'error_message'          => '页面错误！请稍后再试～',
     // 显示错误信息
-    'show_error_msg'         => true,
+    'show_error_msg'         => TRUE,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
 
@@ -238,7 +241,7 @@ return [
     ],
     //输出替换
     'view_replace_str'=>[
-    '__PUBLIC__'=>'/wuanlife_console/public',
+        '__PUBLIC__' => __PUBLIC__,//public目录的全局变量，在/public/index.php中定义
     '__ROOT__' => '/',
     ],
 ];

@@ -10,7 +10,8 @@ class Post extends Controller
 	public function __construct(Request $request)
 	{
 		parent::__construct($request);
-		if(empty(Session::get()))
+		$value = Session::get();
+		if(empty($value))
 		{
 			if($request->controller()!='user'&&$request->action()!='index'&&$request->action()!='login')
 			{

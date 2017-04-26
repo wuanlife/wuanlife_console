@@ -6,12 +6,15 @@ use think\DB;
 
 class Group extends Model
 {
-	public function get_group(){
+	public function get_group($page){
         $rs = Db::name('group_base gb')
             ->join('group_detail gd','gb.id = gd.group_base_id AND gd.authorization = 01')
             ->join('user_base ub','gd.user_base_id = user_base.id')
             ->field('gb.id AS gid,gb.name AS gname,gb.private,ub.id AS uid,ub.nickname AS uname')
-            ->paginate(10);
+            ->paginate(10,false,[
+                'page'=>$page,
+                'path'=>url('get_group','',false)."/page/[PAGE].html",
+            ]);
         return $rs;
     }
     public function get_group_member($gid)

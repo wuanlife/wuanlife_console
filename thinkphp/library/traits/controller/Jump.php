@@ -29,13 +29,12 @@ trait Jump
      * @access protected
      * @param mixed     $msg 提示信息
      * @param string    $url 跳转的URL地址
-     * @param string|array   $vars 参数
      * @param mixed     $data 返回的数据
      * @param integer   $wait 跳转等待时间
      * @param array     $header 发送的Header信息
      * @return void
      */
-    protected function success($msg = '', $url = null, $vars =null,$data = '', $wait = 3, array $header = [])
+    protected function success($msg = '', $url = null, $data = '', $wait = 3, array $header = [])
     {
         $code = 1;
         if (is_numeric($msg)) {
@@ -45,7 +44,7 @@ trait Jump
         if (is_null($url) && isset($_SERVER["HTTP_REFERER"])) {
             $url = $_SERVER["HTTP_REFERER"];
         } elseif ('' !== $url) {
-            //$url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : Url::build($url,$vars);
+            $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : Url::build($url);
         }
         $result = [
             'code' => $code,

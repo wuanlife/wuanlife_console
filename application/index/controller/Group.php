@@ -6,7 +6,6 @@ use think\Controller;
 use think\Request;
 use think\Session;
 use think\Model;
-use think\Url;
 
 class Group extends Controller
 {
@@ -14,8 +13,9 @@ class Group extends Controller
     public function __construct(Request $request)
     {
         parent::__construct($request);
-		 if(empty(Session::get()))
-		 {
+        $value = Session::get();
+        if(empty($value))
+        {
 		 	if($request->controller()!='user'&&$request->action()!='index'&&$request->action()!='login')
 		 	{
 		 		$this->error('请先登录系统！',url('User/index'));
@@ -26,9 +26,8 @@ class Group extends Controller
 	 public function get_group()
 	{
         $g = new GroupModel();
-        $rs = $g->get_group();
-
-        $page = Request::instance()->get('page');
+        $page = input('page');
+        $rs = $g->get_group($page);
         $this->assign('page',$page);
         $this->assign('list',$rs);
         return $this->fetch('group');
@@ -37,8 +36,8 @@ class Group extends Controller
 	public function search_group()
 	{
 		$g = new GroupModel();
-		$gname = Request::instance()->get('gname');
-        $page = Request::instance()->get('page');
+		$gname = input('gname');
+        $page = input('page');
 		$list = $g->search_group($gname);
         $this->assign('list',$list);
         $this->assign('page',$page);
@@ -52,8 +51,8 @@ class Group extends Controller
 	public function change_gname1()
 	{
 		$g = new GroupModel();
-		$gname = Request::instance()->get('new_gname');
-        $page = Request::instance()->get('pn');
+		$gname = input('new_gname');
+        $page = input('pn');
 		$list = $g->search_group_full($gname);
 		$this->assign('list',$list);
         $this->assign('page',$page);
@@ -64,29 +63,26 @@ class Group extends Controller
 	{
 		//用星球名查找。如果存在显示错误，假如不存在，更新星球名
 		$g = new GroupModel();
-		$new_gname = Request::instance()->get('new_gname');
-        $old_gname = Request::instance()->get('old_gname');
-        $page = Request::instance()->get('pn');
-		$gid = Request::instance()->get('gid');
+		$new_gname = input('new_gname');
+        $old_gname = input('old_gname');
+        $page = input('pn');
+		$gid = input('gid');
 		$rs = $g->search_group_full($new_gname);
-
-		 if (isset($rs[0]['gname'])) {
-		 	if($new_gname == $old_gname)
-			{
-				echo "<script language=javascript>alert('和原星球名一致，请重新输入！');history.back();</script>";
-			}
-			else
-			{
-				echo "<script language=javascript>alert('星球已存在');history.back();</script>";
-			}
+        //var_dump($rs->isEmpty());exit;
+		 if ($rs->isEmpty()) {
+             $update = $g->update_gname($gid,$new_gname);
+             $this->success('更改成功！','get_group?page='.$page);
 		 }
 		 else
 		 {
-		 	$update = $g->update_gname($gid,$new_gname);
-             $this->success('更改成功！','get_group?page='.$page);
-             //$url = '/get_group?page='.$page;
-             //$url = Url::build($url);
-             //var_dump(strpos($url, '://') || 0 === strpos($url, '/'));
+             if($new_gname == $old_gname)
+             {
+                 echo "<script language=javascript>alert('和原星球名一致，请重新输入！');history.back();</script>";
+             }
+             else
+             {
+                 echo "<script language=javascript>alert('星球已存在');history.back();</script>";
+             }
 		 }
 	}
 
@@ -98,8 +94,8 @@ class Group extends Controller
 	public function change_uname1()
 	{
 		$g = new GroupModel();
-		$gname = Request::instance()->get('gname');
-        $page = Request::instance()->get('pn');
+		$gname = input('gname');
+        $page = input('pn');
 		$list = $g->search_group_full($gname);
         $member = $g->get_group_member($list[0]['gid']);
         $this->assign('list',$list);
@@ -113,10 +109,10 @@ class Group extends Controller
 		//用星球名查找。如果存在 显示错误，假如不存在，更新星球名
 		$g = new GroupModel();
 
-		$new_uname = Request::instance()->get('new_uname'); //新主人名
-		$gid = Request::instance()->get('gid');				//星球id
-		$old_uid = Request::instance()->get('old_uid');		//旧主人id
-        $page = Request::instance()->get('pn');
+		$new_uname = input('new_uname'); //新主人名
+		$gid = input('gid');				//星球id
+		$old_uid = input('old_uid');		//旧主人id
+        $page = input('pn');
 		$urs = $g->search_user_info($gid,$new_uname);
 		if(empty($urs[0]['uid']))
 		{

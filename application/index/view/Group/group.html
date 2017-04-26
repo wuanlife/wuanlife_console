@@ -65,7 +65,7 @@ fieldset.search:hover {
             <div class="crumb-list"><span class="crumb-name">星球管理</span></div>
         </div>
         <div>
-            <form method="get" id="searchform" action="search_group">
+            <form method="get" id="searchform" action="{:url('search_group')}">
                 <fieldset class="search">
                      <input type="text" name="gname" id="s" class="box inputText" placeholder="输入星球名称">
                       <button class="btn"> </button>
@@ -89,9 +89,9 @@ fieldset.search:hover {
                         <tr>
                             <td>{$group.gid}</td>
                             <td>{$group.gname}</td>
-                            <td><a href="change_gname1?new_gname={$group.gname}&pn={$page}">更改名称</a></td>
+                            <td><a href="{:url('change_gname1',['new_gname'=>$group.gname,'pn'=>$page])}">更改名称</a></td>
                             <td>{$group.uname}</td>
-                            <td><a href="change_uname1?gname={$group.gname}&pn={$page}">更改主人</a></td>
+                            <td><a href="{:url('change_uname1',['gname'=>$group.gname,'pn'=>$page])}">更改主人</a></td>
                             <td>{$group.private}</td>
                             <td><a href="http://www.wuanla.com/group/{$group.gid}">跳转到星球</a></td>
                         </tr>
