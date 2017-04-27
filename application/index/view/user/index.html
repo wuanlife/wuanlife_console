@@ -50,7 +50,7 @@
         $("button").on("click", function() {
             $.ajax({
                 type: "GET",
-                url: "../user/login",
+                url: "{:url('login')}",
                 data: {
                     email: $("#email").val(),
                     password: $("#password").val()
@@ -58,7 +58,7 @@
                 success: function(data) {
                     if(data=='登录成功')
                     {
-                        window.location='../user/get_user';
+                        window.location="{:url('get_user')}";
                     }else
                     {
                         alert(data);

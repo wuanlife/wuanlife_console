@@ -64,7 +64,7 @@
         if(window.confirm('你确定要重置密码吗？')){
             $.ajax({
                 type: "GET",
-                url: "re_psw",
+                url: "{:url('re_psw')}",
                 data: {
                     user_id: $(this).attr('value')
                 },
