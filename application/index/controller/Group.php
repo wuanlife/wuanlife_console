@@ -70,7 +70,7 @@ class Group extends Controller
 		$rs = $g->search_group_full($new_gname);
         //var_dump($rs->isEmpty());exit;
 		 if ($rs->isEmpty()) {
-             $update = $g->update_gname($gid,$new_gname);
+             $g->update_gname($gid,$new_gname);
              $this->success('更改成功！','get_group?page='.$page);
 		 }
 		 else
