@@ -15,8 +15,14 @@ class Index extends Controller
     }
 
     public function get_user_data(){
-        $start = date('Y-m-').'01 00:00:00';
-        $end = date('Y-m-t').' 23:59:59';
+//        \think\Db::listen(function($sql, $time, $explain){
+//            // 记录SQL
+//            echo $sql. ' ['.$time.'s]';
+//            // 查看性能分析结果
+//            dump($explain);
+//        });
+        $start = date('Y-m-d 00:00:00',strtotime('-1month'));
+        $end = date('Y-m-d 23:59:59',strtotime('now'));
         $rs= \think\Db::name('user_base')
             ->join('post_detail','user_base.id = post_detail.user_base_id AND post_detail.createTime >= :start AND post_detail.createTime <= :end AND post_detail.floor = 1','LEFT')
             ->field('id AS user_id,nickname AS user_name,Email AS user_email,COUNT(post_base_id) AS num')
