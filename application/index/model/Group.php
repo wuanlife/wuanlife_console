@@ -58,8 +58,14 @@ class Group extends Model
     }
     public function update_gname($gid,$new_gname)
     {
-        $sql = "UPDATE group_base set name = '{$new_gname}' where id = {$gid}";
-        Db::query($sql);
+        // $sql = "UPDATE group_base set name = '{$new_gname}' where id = {$gid}";
+        // Db::query($sql);
+        Db::table('group_base')
+            ->where('id',$gid)
+            ->update([
+                'name'  => $new_gname,
+            ]);
+
     }
 
     public function search_group_info($gid)
