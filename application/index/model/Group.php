@@ -29,6 +29,7 @@ class Group extends Model
             ->join('group_detail gd','gd.group_base_id = :gid AND gd.user_base_id = ub.id')
             ->bind(['gid'=>"$gid"])
             ->field('ub.id uid,ub.nickname uname,gd.authorization')
+            //->select();
             ->paginate(10);
         return $rs;
     }
@@ -91,22 +92,22 @@ class Group extends Model
     }
     public function update_user_authorization($gid,$new_uid,$old_uid)
     {
-        Db::table('group_detail')
-            ->where('group_base_id',$gid)
-            ->where('user_base_id',$new_uid)
-            ->update([
-                'authorization'  => '01',
-            ]);
-        Db::table('group_detail')
-            ->where('group_base_id',$gid)
-            ->where('user_base_id',$old_uid)
-            ->update([
-                'authorization'  => '03',
-            ]);
-//        $sql1 = "update group_detail set authorization ='01' where group_base_id = {$gid} and user_base_id = {$new_uid}";
-//        $sql2 = "update group_detail set authorization ='03' where group_base_id = {$gid} and user_base_id = {$old_uid}";
-//        Db::query($sql2);
-//        Db::query($sql1);
+//        Db::table('group_detail')
+//            ->where('group_base_id',$gid)
+//            ->where('user_base_id',$new_uid)
+//            ->update([
+//                'authorization'  => '01',
+//            ]);
+//        Db::table('group_detail')
+//            ->where('group_base_id',$gid)
+//            ->where('user_base_id',$old_uid)
+//            ->update([
+//                'authorization'  => '03',
+//            ]);
+        $sql1 = "update group_detail set authorization ='01' where group_base_id = {$gid} and user_base_id = {$new_uid}";
+        $sql2 = "update group_detail set authorization ='03' where group_base_id = {$gid} and user_base_id = {$old_uid}";
+        Db::query($sql2);
+        Db::query($sql1);
 
     }
     public function test()
