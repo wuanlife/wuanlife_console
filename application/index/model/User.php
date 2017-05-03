@@ -19,10 +19,12 @@ class User extends Model
     }
     public function re_psw($data)
     {
-        $sql = 'update user_base set password = :password where id = :id ';
-        $parms = ['password'=>$data['password'],'id'=>$data['user_id']];
-
-        return Db::query($sql,$parms);
+//        $sql = 'update user_base set password = :password where id = :id ';
+//        $parms = ['password'=>$data['password'],'id'=>$data['user_id']];
+//        return Db::query($sql,$parms);
+        return Db::table('user_base')
+            ->where('id',$data['user_id'])
+            ->setField('password', $data['password']);
     }
 
     public function login($data)

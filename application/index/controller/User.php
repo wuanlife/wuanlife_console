@@ -72,12 +72,14 @@ class User extends Controller
 	{
 		$data['user_id'] = input('user_id'); // 获取某个get变量
         if(empty($data['user_id'])){
-            $this->error('重置密码失败！');
+            //$this->error('重置密码失败！');
+			echo '重置密码失败！';
         }else{
 			$data['password'] = md5('123456');
 			$user_model = new UserModel();
 			$user_model->re_psw($data);
-            $this->success('重置密码为123456成功！');
+            //$this->success('重置密码为123456成功！');
+			echo '重置密码为123456成功！';
 		}
 
 	}

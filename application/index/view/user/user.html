@@ -46,7 +46,7 @@
                             <td>{$vo.user_name}</td>
                             <td>{$vo.user_email}</td>
                             <td>{$vo.num}</td>
-                            <td><a href="{:url('re_psw',['user_id'=>$vo.user_id])}" class="user_id">重置密码</a></td>
+                            <td><a href="#" value="{$vo.user_id}" class="user_id">重置密码</a></td>
                         </tr>
                         {/volist}
                     </table>
