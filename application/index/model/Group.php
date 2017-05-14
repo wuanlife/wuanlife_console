@@ -17,7 +17,7 @@ class Group extends Model
             ]);
         return $rs;
     }
-    public function get_group_member($gid)
+    public function get_group_member($gid,$page,$gname)
     {
 //        Db::listen(function($sql, $time, $explain){
 //            // 记录SQL
@@ -30,7 +30,10 @@ class Group extends Model
             ->bind(['gid'=>"$gid"])
             ->field('ub.id uid,ub.nickname uname,gd.authorization')
             //->select();
-            ->paginate(10);
+            ->paginate(10,false,[
+                'page'=>$page,
+                'path'=>url('change_uname1','',false)."/gname/"."$gname"."/pn/[PAGE].html",
+            ]);
         return $rs;
     }
     public function search_group_full($s)

@@ -23,14 +23,15 @@
             </tr>
             {/volist}
         </table>
+        <div>{$member->render()}</div>
 	    <p>原星球主人为：<?php  echo ($list[0]['uname']);?></p>
         <p>更改为：</p>
         <fieldset class="search">
-	         <input type="text" name="new_uname" id="s" class="box inputText" placeholder="输入新主人名">
-	         <input type="hidden" name="gid" value="<?php echo ($list[0]['gid']);?>">
-	         <input type="hidden" name="old_uid" value="<?php echo ($list[0]['uid']);?>">
+	        <input type="text" name="new_uname" id="s" class="box inputText" placeholder="输入新主人名">
+	        <input type="hidden" name="gid" value="<?php echo ($list[0]['gid']);?>">
+	        <input type="hidden" name="old_uid" value="<?php echo ($list[0]['uid']);?>">
             <input type="hidden" name="pn" value="<?php echo $page;?>">
-	          <button class="btn">确定</button>
+	        <button class="btn">确定</button>
 	    </fieldset>
 	</form>
 </div> 
