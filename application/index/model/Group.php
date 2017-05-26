@@ -19,12 +19,6 @@ class Group extends Model
     }
     public function get_group_member($gid)
     {
-//        Db::listen(function($sql, $time, $explain){
-//            // 记录SQL
-//            echo $sql. ' ['.$time.'s]';
-//            // 查看性能分析结果
-//            dump($explain);
-//        });
         $rs = Db::name('user_base ub')
             ->join('group_detail gd','gd.group_base_id = :gid AND gd.user_base_id = ub.id')
             ->bind(['gid'=>"$gid"])

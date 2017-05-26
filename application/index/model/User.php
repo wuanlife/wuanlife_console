@@ -6,8 +6,8 @@ use think\DB;
 class User extends Model
 {
     public function get_user(){
-        $start = date('Y-m-').'01 00:00:00';
-        $end = date('Y-m-t').' 23:59:59';
+        $start = date('Y-m-d 00:00:00',strtotime('-1month'));
+        $end = date('Y-m-d 23:59:59');
         $rs= Db::name('user_base')
             ->join('post_detail','user_base.id = post_detail.user_base_id AND post_detail.create_time >= :start AND post_detail.create_time <= :end AND post_detail.floor = 1','LEFT')
             ->field('id AS user_id,nickname AS user_name,email AS user_email,COUNT(post_base_id) AS num')
@@ -37,6 +37,18 @@ class User extends Model
         $parms = ['password'=>$data['password'],'email'=>$data['email']];
 
         return Db::query($sql,$parms);
+    }
+    public function search_user($s)
+    {
+        $rs = Db::name('user_base')
+            ->where('nickname LIKE :uname')
+            ->field('id AS user_id,nickname AS user_name,email AS user_email,"-" AS num')
+            ->bind(['uname'=>"%$s%"])
+            ->paginate(10,false,[
+                'query' => array('uname'=>$s),
+
+            ]);
+        return $rs;
     }
 
 

@@ -83,4 +83,13 @@ class User extends Controller
 		}
 
 	}
+
+	public function search_user()
+	{
+		$uname = input('uname');
+        $user_model = new UserModel();
+        $list = $user_model->search_user($uname);
+        $this->assign('list',$list);
+        return $this->fetch('user');
+	}
 }
