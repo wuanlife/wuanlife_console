@@ -28,6 +28,7 @@ class Group extends Controller
         $g = new GroupModel();
         $page = input('page');
         $rs = $g->get_group($page);
+        //print_r($rs);
         $this->assign('page',$page);
         $this->assign('list',$rs);
         return $this->fetch('group');
@@ -97,7 +98,7 @@ class Group extends Controller
 		$gname = input('gname');
         $page = input('pn');
 		$list = $g->search_group_full($gname);
-        $member = $g->get_group_member($list[0]['gid']);
+        $member = $g->get_group_member($list[0]['gid'],$page,$gname);
         $this->assign('list',$list);
         $this->assign('member',$member);
         $this->assign('page',$page);

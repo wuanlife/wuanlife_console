@@ -17,14 +17,17 @@ class Group extends Model
             ]);
         return $rs;
     }
-    public function get_group_member($gid)
+    public function get_group_member($gid,$page,$gname)
     {
         $rs = Db::name('user_base ub')
             ->join('group_detail gd','gd.group_base_id = :gid AND gd.user_base_id = ub.id')
             ->bind(['gid'=>"$gid"])
             ->field('ub.id uid,ub.nickname uname,gd.authorization')
             //->select();
-            ->paginate(10);
+            ->paginate(10,false,[
+                'page'=>$page,
+                'path'=>url('change_uname1','',false)."/gname/"."$gname"."/pn/[PAGE].html",
+            ]);
         return $rs;
     }
     public function search_group_full($s)
